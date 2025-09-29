@@ -2,17 +2,30 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 export default function Home() {
   const [message, setMessage] = useState("");
+  const [messageList, setMessageList] = useState<any[]>([]);
 
   function handleMessageSubmission() {
     console.log("Here is the message that was sent", message);
+    setMessageList((prev) => [...prev, message]);
     setMessage("");
   }
   return (
     <div className="flex flex-col h-screen">
-      <div className="flex-1"></div>
+      <div className="flex-1 w-[650px] border border-red-500 mx-auto">
+        {messageList.length > 0 &&
+          messageList.map((eachMessage) => (
+            <div
+              key={uuidv4()}
+              className="border w-fit ml-auto py-4 px-6 my-2 rounded-md border-gray-200 bg-green-100 text-gray-800 text-sm max-w-[80%]"
+            >
+              {eachMessage}
+            </div>
+          ))}
+      </div>
       <form
         onSubmit={(e) => {
           e.preventDefault();
