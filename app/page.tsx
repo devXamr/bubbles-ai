@@ -53,11 +53,13 @@ export default function Home() {
       <div className="flex-1 w-[650px] border border-red-500 mx-auto">
         {messageList && messageList.length > 0 && searchTerm === ""
           ? messageList.map((eachMessage) => (
-              <Message eachMessage={eachMessage} />
+              <Message eachMessage={eachMessage} searchWords={searchTerm} />
             ))
           : messageList
               .filter((eachMessage) => eachMessage.includes(searchTerm))
-              .map((eachMessage) => <Message eachMessage={eachMessage} />)}
+              .map((eachMessage) => (
+                <Message eachMessage={eachMessage} searchWords={searchTerm} />
+              ))}
       </div>
       <form
         onSubmit={(e) => {
