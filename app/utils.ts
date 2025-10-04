@@ -1,6 +1,27 @@
-export function downloadPDF() {}
+import { jsPDF } from "jspdf";
+import { Document, Packer, Paragraph } from "docx";
+import { saveAs } from "file-saver";
 
-export function downloadDOCX() {}
+export function downloadPDF(data: string[]) {
+  const doc = new jsPDF();
+
+  doc.text(data.join("/n"), 10, 10);
+  doc.save("messageList.pdf");
+}
+
+export async function downloadDOCX(data: string[]) {
+  const doc = new Document({
+    sections: [
+      {
+        properties: {},
+        children: data.map((eachLine) => new Paragraph({ text: eachLine })),
+      },
+    ],
+  });
+
+  const blob = await Packer.toBlob(doc);
+  saveAs(blob, "messageList.docx");
+}
 
 // will accept messageList and download it as a .txt file.
 export function downloadTXT(data: string[]) {

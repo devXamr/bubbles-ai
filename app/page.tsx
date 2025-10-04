@@ -4,8 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Message from "./components/message";
-import { browser } from "process";
-import { downloadTXT } from "./utils";
+import { downloadDOCX, downloadPDF, downloadTXT } from "./utils";
 
 async function fetchLocalMessages() {
   const allMessages = localStorage.getItem("localMessages");
@@ -80,6 +79,17 @@ export default function Home() {
               }}
             >
               Download TXT
+            </button>
+            <button
+              onClick={() => {
+                downloadPDF(messageList);
+              }}
+            >
+              Download PDF
+            </button>
+
+            <button onClick={() => downloadDOCX(messageList)}>
+              Download .docx
             </button>
           </div>
         )}
