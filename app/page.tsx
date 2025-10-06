@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import Message from "./components/message";
 import { downloadDOCX, downloadPDF, downloadTXT } from "./utils";
 import FileSaveButton from "./components/file-save-button";
+import { SendHorizontal, WandSparkles } from "lucide-react";
 
 async function fetchLocalMessages() {
   const allMessages = localStorage.getItem("localMessages");
@@ -19,6 +20,7 @@ export default function Home() {
   const [message, setMessage] = useState("");
   const [messageList, setMessageList] = useState<any[]>([]);
   const [showModal, setShowModal] = useState(false);
+  const [searchModeActive, setSearchModeActive] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -119,17 +121,36 @@ export default function Home() {
           e.preventDefault();
           handleMessageSubmission();
         }}
-        className=" border w-fit border-gray-300 rounded-md text-md mx-auto mb-2"
+        className=" border w-[650px] border-gray-300 rounded-md text-md mx-auto mb-2"
       >
         <textarea
-          className="h-30 w-[570px] py-3 px-2 outline-0 text-gray-600"
+          className="h-28 w-full  py-3 px-2 outline-0 text-gray-600 placeholder-gray-300"
           onChange={(e) => setMessage(e.target.value)}
           value={message}
           placeholder="Add a new message here..."
         />
-        <button type="submit" className="px-4 border">
-          Send
-        </button>
+
+        <div className="ml-auto w-fit">
+          <button
+            className={`text-gray-400 text-sm border rounded-md px-2 py-2 my-1 mx-2 cursor-pointer transition-colors ${
+              searchModeActive && "bg-green-100 border-green-500 text-green-800"
+            }`}
+            onClick={() => {
+              setSearchModeActive((prev) => !prev);
+            }}
+            type="button"
+            title="AI Assistant"
+          >
+            <WandSparkles size="20px" />
+          </button>
+          <button
+            type="submit"
+            className="text-gray-400 border border-gray-600 rounded-md px-2 py-2 my-1 mr-2 hover:bg-gray-100 cursor-pointer text-sm hover:border-gray-300"
+            title="Send"
+          >
+            <SendHorizontal size="20px" />
+          </button>
+        </div>
       </form>
     </div>
   );
