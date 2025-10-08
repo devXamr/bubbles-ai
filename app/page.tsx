@@ -145,7 +145,7 @@ export default function Home() {
           </button>
           <button
             type="submit"
-            className="text-gray-400 border border-gray-600 rounded-md px-2 py-2 my-1 mr-2 hover:bg-gray-100 cursor-pointer text-sm hover:border-gray-300"
+            className="text-gray-400 border border-gray-200 rounded-md px-2 py-2 my-1 mr-2 hover:bg-gray-100 cursor-pointer text-sm hover:border-gray-300"
             title="Send"
           >
             <SendHorizontal size="20px" />
