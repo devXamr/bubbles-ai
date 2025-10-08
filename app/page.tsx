@@ -7,6 +7,7 @@ import Message from "./components/message";
 import { downloadDOCX, downloadPDF, downloadTXT } from "./utils";
 import FileSaveButton from "./components/file-save-button";
 import { SendHorizontal, WandSparkles } from "lucide-react";
+import { motion } from "motion/react";
 
 async function fetchLocalMessages() {
   const allMessages = localStorage.getItem("localMessages");
@@ -105,17 +106,22 @@ export default function Home() {
           )}
         </div>
       </div>
-      <div className="flex-1 w-[650px] border border-gray-200 my-3 rounded-xl bg-gray-50 px-4 py-4 mx-auto max-h-[640px] -mt-10 overflow-y-scroll scrollbar-hidden">
-        {messageList && messageList.length > 0 && searchTerm === ""
-          ? messageList.map((eachMessage) => (
-              <Message eachMessage={eachMessage} searchWords={searchTerm} />
-            ))
-          : messageList
-              .filter((eachMessage) => eachMessage.includes(searchTerm))
-              .map((eachMessage) => (
+      <motion.div
+        layout
+        className="flex-1 w-[650px] border border-gray-200 my-3 rounded-xl bg-gray-50 px-4 py-4 mx-auto max-h-[640px] -mt-10 overflow-y-scroll scrollbar-hidden"
+      >
+        <motion.div layout>
+          {messageList && messageList.length > 0 && searchTerm === ""
+            ? messageList.map((eachMessage) => (
                 <Message eachMessage={eachMessage} searchWords={searchTerm} />
-              ))}
-      </div>
+              ))
+            : messageList
+                .filter((eachMessage) => eachMessage.includes(searchTerm))
+                .map((eachMessage) => (
+                  <Message eachMessage={eachMessage} searchWords={searchTerm} />
+                ))}
+        </motion.div>
+      </motion.div>
       <form
         onSubmit={(e) => {
           e.preventDefault();
