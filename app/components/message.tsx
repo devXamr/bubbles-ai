@@ -5,6 +5,7 @@ import Highlighter from "react-highlight-words";
 import { text } from "stream/consumers";
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { EllipsisVertical } from "lucide-react";
 
 type messageProps = {
   eachMessage: string;
@@ -13,10 +14,10 @@ type messageProps = {
 export default function Message({ eachMessage, searchWords }: messageProps) {
   const [isHovering, setIsHovering] = useState(false);
   return (
-    <motion.div className="w-fit ml-auto my-2 rounded-md max-w-[80%]">
+    <motion.div layout className="w-fit ml-auto my-2 rounded-md max-w-[80%]">
       <div
         key={uuidv4()}
-        className="border ml-auto  py-4 px-6 border-gray-200 bg-green-100 transition-colors duration-100 hover:bg-green-200 text-gray-800 text-sm "
+        className="border relative flex ml-auto  py-4 px-6 pr-8 border-gray-200 bg-green-100 transition-colors duration-100 hover:bg-green-200 text-gray-800 text-sm "
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
       >
@@ -25,6 +26,11 @@ export default function Message({ eachMessage, searchWords }: messageProps) {
           searchWords={[searchWords]}
           highlightStyle={{ backgroundColor: "yellow" }}
         />
+        {isHovering && (
+          <button className="absolute cursor-pointer right-0.5 text-gray-600">
+            <EllipsisVertical size={20} />
+          </button>
+        )}
       </div>
 
       <AnimatePresence>
