@@ -51,6 +51,30 @@ export default function Home() {
     setMessageList(filteredMessages);
   }
 
+  function handleMessageEdit(
+    editedMessage: string,
+    previousMessage: MessageType
+  ) {
+    const index = messageList.findIndex(
+      (message) => message.id === previousMessage.id
+    );
+
+    let editedMessageList = [...messageList];
+
+    console.log("This is the copied messageList", editedMessageList);
+
+    editedMessageList[index] = {
+      id: messageList[index].id,
+      message: editedMessage,
+    };
+
+    console.log(
+      "Here's the array after the edit was made, ",
+      editedMessageList
+    );
+
+    setMessageList(editedMessageList);
+  }
   function handleMessageSubmission() {
     console.log("Here is the message that was sent", message);
 
@@ -135,6 +159,7 @@ export default function Home() {
                   eachMessage={eachMessage}
                   searchWords={searchTerm}
                   messageDeletionFunction={handleMessageDeletion}
+                  messageEditFunction={handleMessageEdit}
                 />
               ))
             : messageList
@@ -146,6 +171,7 @@ export default function Home() {
                     eachMessage={eachMessage}
                     searchWords={searchTerm}
                     messageDeletionFunction={handleMessageDeletion}
+                    messageEditFunction={handleMessageEdit}
                   />
                 ))}
         </motion.div>
