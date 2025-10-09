@@ -33,6 +33,17 @@ export default function Home() {
     localStorage.setItem("localMessages", JSON.stringify(messageList));
   }, [messageList]);
 
+  function handleMessageDeletion(deletionMessage: string) {
+    console.log("This is the message sent for deletion ", deletionMessage);
+
+    const filteredMessages = messageList.filter(
+      (eachMessage) => eachMessage != deletionMessage
+    );
+
+    // add another state value for recentlyDeletedMessage to undo easily.
+
+    setMessageList(filteredMessages);
+  }
   function handleMessageSubmission() {
     console.log("Here is the message that was sent", message);
 
@@ -113,12 +124,20 @@ export default function Home() {
         <motion.div layout>
           {messageList && messageList.length > 0 && searchTerm === ""
             ? messageList.map((eachMessage) => (
-                <Message eachMessage={eachMessage} searchWords={searchTerm} />
+                <Message
+                  eachMessage={eachMessage}
+                  searchWords={searchTerm}
+                  messageDeletionFunction={handleMessageDeletion}
+                />
               ))
             : messageList
                 .filter((eachMessage) => eachMessage.includes(searchTerm))
                 .map((eachMessage) => (
-                  <Message eachMessage={eachMessage} searchWords={searchTerm} />
+                  <Message
+                    eachMessage={eachMessage}
+                    searchWords={searchTerm}
+                    messageDeletionFunction={handleMessageDeletion}
+                  />
                 ))}
         </motion.div>
       </motion.div>
