@@ -13,11 +13,12 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
+import { MessageType } from "../page";
 
 type messageProps = {
-  eachMessage: string;
+  eachMessage: MessageType;
   searchWords: string;
-  messageDeletionFunction: (deletionMessage: string) => void;
+  messageDeletionFunction: (deletionMessage: MessageType) => void;
 };
 export default function Message({
   eachMessage,
@@ -49,7 +50,7 @@ export default function Message({
             onMouseLeave={() => setIsHovering(false)}
           >
             <Highlighter
-              textToHighlight={eachMessage}
+              textToHighlight={eachMessage.message}
               searchWords={[searchWords]}
               highlightStyle={{ backgroundColor: "yellow" }}
             />

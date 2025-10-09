@@ -8,6 +8,7 @@ import { downloadDOCX, downloadPDF, downloadTXT } from "./utils";
 import FileSaveButton from "./components/file-save-button";
 import { SendHorizontal, WandSparkles } from "lucide-react";
 import { motion } from "motion/react";
+import { UUID } from "crypto";
 
 async function fetchLocalMessages() {
   const allMessages = localStorage.getItem("localMessages");
@@ -17,9 +18,14 @@ async function fetchLocalMessages() {
   } else return JSON.parse(allMessages);
 }
 
+export type MessageType = {
+  id: string;
+  message: string;
+};
+
 export default function Home() {
-  const [message, setMessage] = useState("");
-  const [messageList, setMessageList] = useState<any[]>([]);
+  const [message, setMessage] = useState<string>("");
+  const [messageList, setMessageList] = useState<MessageType[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [searchModeActive, setSearchModeActive] = useState(false);
 
@@ -33,22 +39,23 @@ export default function Home() {
     localStorage.setItem("localMessages", JSON.stringify(messageList));
   }, [messageList]);
 
-  function handleMessageDeletion(deletionMessage: string) {
+  function handleMessageDeletion(deletionMessage: MessageType) {
     console.log("This is the message sent for deletion ", deletionMessage);
 
     const filteredMessages = messageList.filter(
-      (eachMessage) => eachMessage != deletionMessage
+      (eachMessage) => eachMessage.id != deletionMessage.id
     );
 
     // add another state value for recentlyDeletedMessage to undo easily.
 
     setMessageList(filteredMessages);
   }
+
   function handleMessageSubmission() {
     console.log("Here is the message that was sent", message);
 
     if (messageList) {
-      setMessageList((prev) => [...prev, message]);
+      setMessageList((prev) => [...prev, { id: uuidv4(), message: message }]);
       setMessage("");
     }
   }
@@ -131,7 +138,9 @@ export default function Home() {
                 />
               ))
             : messageList
-                .filter((eachMessage) => eachMessage.includes(searchTerm))
+                .filter((eachMessage) =>
+                  eachMessage.message.includes(searchTerm)
+                )
                 .map((eachMessage) => (
                   <Message
                     eachMessage={eachMessage}
