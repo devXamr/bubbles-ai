@@ -49,9 +49,23 @@ export default function Message({
 
   if (eachMessage.type === "prompt") {
     return (
-      <div className="px-3 py-3 rounded-lg border-gray-100">
-        <div>{eachMessage.message}</div>
-        <div>{eachMessage.response}</div>
+      <div className="px-3 py-3 rounded-lg border-gray-200 max-w-[70%] mr-auto bg-gray-100">
+        <div className="bg-gray-200 text-xs rounded-md py-2 px-3 text-gray-500">
+          <div className="font-medium">Query</div>
+          <Highlighter
+            textToHighlight={eachMessage.message}
+            searchWords={[searchWords]}
+            highlightStyle={{ backgroundColor: "yellow" }}
+          />
+        </div>
+        <div className="text-sm px-1 py-2 text-gray-800">
+          {eachMessage.response}
+        </div>
+
+        <div className="flex justify-between text-xs text-gray-500 py-2 px-1">
+          <div>{eachMessage.date}</div>
+          <div>{eachMessage.time}</div>
+        </div>
       </div>
     );
   }
@@ -113,7 +127,7 @@ export default function Message({
           >
             <div
               key={uuidv4()}
-              className="border relative flex ml-auto  py-4 px-6 pr-8 border-gray-200 bg-green-100 transition-colors duration-100 hover:bg-green-200 text-gray-800 text-sm "
+              className="border relative flex ml-auto  py-4 px-6 pr-8 border-gray-200 bg-green-100 transition-colors duration-100 hover:bg-green-200 text-gray-800 text-sm rounded-t-md"
               onMouseEnter={() => setIsHovering(true)}
               onMouseLeave={() => setIsHovering(false)}
             >
