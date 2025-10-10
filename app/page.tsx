@@ -29,6 +29,8 @@ export type MessageType = {
   message: string;
   date: string;
   time: string;
+  type: "prompt" | "message";
+  response?: string;
 };
 
 export default function Home() {
@@ -76,6 +78,7 @@ export default function Home() {
       message: editedMessage,
       date: messageList[index].date,
       time: messageList[index].time,
+      type: messageList[index].type,
     };
 
     console.log(
@@ -85,17 +88,54 @@ export default function Home() {
 
     setMessageList(editedMessageList);
   }
-  function handleMessageSubmission() {
-    console.log("Here is the message that was sent", message);
+
+  function handleAiMessageSubmission() {
+    console.log("The message was passed onto the ai message handler");
 
     const date = getCurrentDate();
     const time = getCurrentTime();
+
+    // Dummy response. TODO: get the actual one by calling the /ai-interact endpoint.
+    const response =
+      "I am an llm, and I reply with silly things. I may sometimes be smart - the other times I may utter bs.";
+
     if (messageList) {
       setMessageList((prev) => [
         ...prev,
-        { id: uuidv4(), message: message, date: date, time: time },
+        {
+          id: uuidv4(),
+          message: message,
+          date: date,
+          time: time,
+          type: "prompt",
+          response: response,
+        },
       ]);
       setMessage("");
+    }
+  }
+
+  function handleMessageSubmission() {
+    console.log("Here is the message that was sent", message);
+
+    if (searchModeActive) {
+      handleAiMessageSubmission();
+    } else {
+      const date = getCurrentDate();
+      const time = getCurrentTime();
+      if (messageList) {
+        setMessageList((prev) => [
+          ...prev,
+          {
+            id: uuidv4(),
+            message: message,
+            date: date,
+            time: time,
+            type: "message",
+          },
+        ]);
+        setMessage("");
+      }
     }
   }
 

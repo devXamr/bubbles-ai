@@ -47,6 +47,15 @@ export default function Message({
 
   console.log("This is the eachMessage that message has received");
 
+  if (eachMessage.type === "prompt") {
+    return (
+      <div className="px-3 py-3 rounded-lg border-gray-100">
+        <div>{eachMessage.message}</div>
+        <div>{eachMessage.response}</div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
