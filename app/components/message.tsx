@@ -124,8 +124,8 @@ export default function Message({
                   transition={{ duration: 0.4 }}
                   className="flex gap-2 ml-auto py-0.5 bg-green-50 text-xs text-gray-400 w-full justify-between border border-gray-100 border-0.5 px-2 rounded-b-md"
                 >
-                  <div>12/01/25</div>
-                  <div>2:00pm</div>
+                  <div>{eachMessage.date}</div>
+                  <div>{eachMessage.time}</div>
                 </motion.div>
               )}
             </AnimatePresence>

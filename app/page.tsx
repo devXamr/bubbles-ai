@@ -4,7 +4,13 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Message from "./components/message";
-import { downloadDOCX, downloadPDF, downloadTXT } from "./utils";
+import {
+  downloadDOCX,
+  downloadPDF,
+  downloadTXT,
+  getCurrentDate,
+  getCurrentTime,
+} from "./utils";
 import FileSaveButton from "./components/file-save-button";
 import { SendHorizontal, WandSparkles } from "lucide-react";
 import { motion } from "motion/react";
@@ -21,6 +27,8 @@ async function fetchLocalMessages() {
 export type MessageType = {
   id: string;
   message: string;
+  date: string;
+  time: string;
 };
 
 export default function Home() {
@@ -66,6 +74,8 @@ export default function Home() {
     editedMessageList[index] = {
       id: messageList[index].id,
       message: editedMessage,
+      date: messageList[index].date,
+      time: messageList[index].time,
     };
 
     console.log(
@@ -78,8 +88,13 @@ export default function Home() {
   function handleMessageSubmission() {
     console.log("Here is the message that was sent", message);
 
+    const date = getCurrentDate();
+    const time = getCurrentTime();
     if (messageList) {
-      setMessageList((prev) => [...prev, { id: uuidv4(), message: message }]);
+      setMessageList((prev) => [
+        ...prev,
+        { id: uuidv4(), message: message, date: date, time: time },
+      ]);
       setMessage("");
     }
   }

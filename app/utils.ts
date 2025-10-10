@@ -42,3 +42,15 @@ export function downloadTXT(data: MessageType[]) {
   // delete the temp url once the download process has been completed.
   URL.revokeObjectURL(url);
 }
+
+export function getCurrentTime() {
+  const date = new Date();
+  const time = date.toLocaleTimeString();
+
+  return time;
+}
+
+export function getCurrentDate() {
+  const date = new Date();
+  return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+}
