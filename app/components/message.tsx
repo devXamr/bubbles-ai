@@ -127,7 +127,7 @@ export default function Message({
           >
             <div
               key={uuidv4()}
-              className="border relative flex ml-auto  py-4 px-6 pr-8 border-gray-200 bg-green-100 transition-colors duration-100 hover:bg-green-200 text-gray-800 text-sm rounded-t-md"
+              className="border relative flex ml-auto  py-4 px-3 border-gray-200 bg-green-100 transition-colors duration-100 hover:bg-green-200 text-gray-800 text-sm rounded-md"
               onMouseEnter={() => setIsHovering(true)}
               onMouseLeave={() => setIsHovering(false)}
             >
