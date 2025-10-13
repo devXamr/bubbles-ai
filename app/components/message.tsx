@@ -7,6 +7,8 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { EllipsisVertical } from "lucide-react";
 
+import Markdown from "react-markdown";
+
 import {
   Dialog,
   DialogContent,
@@ -49,7 +51,7 @@ export default function Message({
 
   if (eachMessage.type === "prompt") {
     return (
-      <div className="px-3 py-3 rounded-lg border-gray-200 max-w-[70%] mr-auto bg-gray-100 my-3">
+      <div className="px-3 py-3 rounded-lg border-gray-200 lg:max-w-[70%] max-w-[85%] mr-auto bg-gray-100 my-3">
         <div className="bg-gray-200 text-xs rounded-md py-2 px-3 text-gray-500">
           <div className="font-medium">Query</div>
           <Highlighter
@@ -59,7 +61,7 @@ export default function Message({
           />
         </div>
         <div className="text-sm px-1 py-2 text-gray-800">
-          {eachMessage.response}
+          <Markdown>{eachMessage.response}</Markdown>
         </div>
 
         <div className="flex justify-between text-xs text-gray-500 py-2 px-1">

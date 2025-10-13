@@ -218,7 +218,7 @@ export default function Chat() {
       </div>
       <motion.div
         layout
-        className="flex-1 w-[650px] border border-gray-200 my-3 rounded-xl bg-gray-50 px-4 py-4 mx-auto max-h-[640px] -mt-10 overflow-y-scroll scrollbar-hidden"
+        className="flex-1 lg:w-[650px] w-full border border-gray-200 my-3 rounded-xl bg-gray-50 px-4 py-4 mx-auto max-h-[640px] -mt-10 overflow-y-scroll scrollbar-hidden"
       >
         <motion.div layout>
           {messageList && messageList.length > 0 && searchTerm === ""
@@ -255,7 +255,7 @@ export default function Chat() {
           e.preventDefault();
           handleMessageSubmission();
         }}
-        className=" border w-[650px] border-gray-300 rounded-md text-md mx-auto mb-2"
+        className=" border lg:w-[650px] w-full border-gray-300 rounded-md text-md mx-auto mb-2"
       >
         <textarea
           className="h-28 w-full  py-3 px-2 outline-0 text-gray-600 placeholder-gray-300"
