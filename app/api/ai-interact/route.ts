@@ -14,11 +14,6 @@ export async function OPTIONS() {
   );
 }
 
-console.log(
-  "This is the google api key from my env: ",
-  process.env.NEXT_PUBLIC_GOOGLE_API_KEY
-);
-
 const ai = new GoogleGenAI({
   apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY!,
 });
