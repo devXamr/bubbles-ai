@@ -1,5 +1,7 @@
 "use client";
 
+import { TextShimmer } from "@/components/motion-primitives/text-shimmer";
+
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -13,7 +15,7 @@ import {
   getCurrentTime,
 } from "../utils";
 import FileSaveButton from "../components/file-save-button";
-import { SendHorizontal, WandSparkles } from "lucide-react";
+import { LoaderCircle, SendHorizontal, WandSparkles } from "lucide-react";
 import { motion } from "motion/react";
 import { UUID } from "crypto";
 
@@ -36,9 +38,11 @@ export type MessageType = {
 
 export default function Chat() {
   const [message, setMessage] = useState<string>("");
+
   const [messageList, setMessageList] = useState<MessageType[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [searchModeActive, setSearchModeActive] = useState(false);
+  const [aiResponseLoading, setAiResponseLoading] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -91,6 +95,8 @@ export default function Chat() {
   }
 
   async function handleAiMessageSubmission() {
+    setMessage("");
+    setAiResponseLoading(true);
     console.log("The message was passed onto the ai message handler");
 
     const date = getCurrentDate();
@@ -99,6 +105,7 @@ export default function Chat() {
     // Dummy response. TODO: get the actual one by calling the /ai-interact endpoint.
     const response = await axios.post(
       "http://192.168.29.240:3000/api/ai-interact",
+      // todo: filter the data so that only user messages are send and ai responses are avoided to avoid data bloat.
       { question: message, messageList: JSON.stringify(messageList) }
     );
 
@@ -116,8 +123,9 @@ export default function Chat() {
           response: response.data.answer,
         },
       ]);
-      setMessage("");
     }
+
+    setAiResponseLoading(false);
   }
 
   function handleMessageSubmission() {
@@ -234,6 +242,12 @@ export default function Chat() {
                     messageEditFunction={handleMessageEdit}
                   />
                 ))}
+
+          {aiResponseLoading && (
+            <TextShimmer className="text-sm px-3 py-1">
+              Loading Response..
+            </TextShimmer>
+          )}
         </motion.div>
       </motion.div>
       <form
@@ -252,8 +266,11 @@ export default function Chat() {
 
         <div className="ml-auto w-fit">
           <button
-            className={`text-gray-400 text-sm border rounded-md px-2 py-2 my-1 mx-2 cursor-pointer transition-colors ${
-              searchModeActive && "bg-green-100 border-green-500 text-green-800"
+            disabled={aiResponseLoading}
+            className={`text-gray-400  text-sm border rounded-md px-2 py-2 my-1 mx-2 cursor-pointer transition-colors  ${
+              searchModeActive &&
+              !aiResponseLoading &&
+              "bg-green-100 border-green-500 text-green-800 "
             }`}
             onClick={() => {
               setSearchModeActive((prev) => !prev);
@@ -261,7 +278,11 @@ export default function Chat() {
             type="button"
             title="AI Assistant"
           >
-            <WandSparkles size="20px" />
+            {aiResponseLoading ? (
+              <LoaderCircle size="20px" className="animate-spin" />
+            ) : (
+              <WandSparkles size="20px" />
+            )}
           </button>
           <button
             type="submit"
