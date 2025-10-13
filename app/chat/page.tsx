@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Message from "../components/message";
+import axios from "axios";
 import {
   downloadDOCX,
   downloadPDF,
@@ -89,15 +90,19 @@ export default function Chat() {
     setMessageList(editedMessageList);
   }
 
-  function handleAiMessageSubmission() {
+  async function handleAiMessageSubmission() {
     console.log("The message was passed onto the ai message handler");
 
     const date = getCurrentDate();
     const time = getCurrentTime();
 
     // Dummy response. TODO: get the actual one by calling the /ai-interact endpoint.
-    const response =
-      "I am an llm, and I reply with silly things. I may sometimes be smart - the other times I may utter bs.";
+    const response = await axios.post(
+      "http://192.168.29.240:3000/api/ai-interact",
+      { question: message, messageList: JSON.stringify(messageList) }
+    );
+
+    console.log("here's the response from the ai", response.data.answer);
 
     if (messageList) {
       setMessageList((prev) => [
@@ -108,7 +113,7 @@ export default function Chat() {
           date: date,
           time: time,
           type: "prompt",
-          response: response,
+          response: response.data.answer,
         },
       ]);
       setMessage("");

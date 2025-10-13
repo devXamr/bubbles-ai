@@ -21,7 +21,7 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
-import { MessageType } from "../page";
+import { MessageType } from "../chat/page";
 
 type messageProps = {
   eachMessage: MessageType;
@@ -49,7 +49,7 @@ export default function Message({
 
   if (eachMessage.type === "prompt") {
     return (
-      <div className="px-3 py-3 rounded-lg border-gray-200 max-w-[70%] mr-auto bg-gray-100">
+      <div className="px-3 py-3 rounded-lg border-gray-200 max-w-[70%] mr-auto bg-gray-100 my-3">
         <div className="bg-gray-200 text-xs rounded-md py-2 px-3 text-gray-500">
           <div className="font-medium">Query</div>
           <Highlighter
