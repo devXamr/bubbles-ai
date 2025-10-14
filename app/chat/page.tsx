@@ -3,7 +3,7 @@
 import { TextShimmer } from "@/components/motion-primitives/text-shimmer";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Message from "../components/message";
 import axios from "axios";
@@ -18,6 +18,7 @@ import FileSaveButton from "../components/file-save-button";
 import { LoaderCircle, SendHorizontal, WandSparkles } from "lucide-react";
 import { motion } from "motion/react";
 import { UUID } from "crypto";
+import { Behavior } from "@google/genai";
 
 async function fetchLocalMessages() {
   const allMessages = localStorage.getItem("localMessages");
@@ -38,7 +39,7 @@ export type MessageType = {
 
 export default function Chat() {
   const [message, setMessage] = useState<string>("");
-
+  const lastMessageRef = useRef<null | HTMLDivElement>(null);
   const [messageList, setMessageList] = useState<MessageType[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [searchModeActive, setSearchModeActive] = useState(false);
@@ -49,6 +50,17 @@ export default function Chat() {
   useEffect(() => {
     fetchLocalMessages().then(setMessageList);
   }, []);
+
+  function scrollToBottom() {
+    if (lastMessageRef.current !== null) {
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+
+  useEffect(() => {
+    console.log("new message, scroll to bottom!");
+    scrollToBottom();
+  }, [messageList]);
 
   useEffect(() => {
     localStorage.setItem("localMessages", JSON.stringify(messageList));
@@ -248,6 +260,8 @@ export default function Chat() {
               Loading Response..
             </TextShimmer>
           )}
+
+          <div ref={lastMessageRef}></div>
         </motion.div>
       </motion.div>
       <form

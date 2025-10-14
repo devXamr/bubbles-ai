@@ -51,7 +51,12 @@ export default function Message({
 
   if (eachMessage.type === "prompt") {
     return (
-      <div className="px-3 py-3 rounded-lg border-gray-200 lg:max-w-[70%] max-w-[85%] mr-auto bg-gray-100 my-3">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 100 }}
+        transition={{ ease: "easeIn", duration: 0.3 }}
+        className="px-3 py-3 rounded-lg border-gray-200 lg:max-w-[70%] max-w-[85%] mx-2 lg:mx-0 mr-auto bg-gray-100 my-3"
+      >
         <div className="bg-gray-200 text-xs rounded-md py-2 px-3 text-gray-500">
           <div className="font-medium">Query</div>
           <Highlighter
@@ -68,7 +73,7 @@ export default function Message({
           <div>{eachMessage.date}</div>
           <div>{eachMessage.time}</div>
         </div>
-      </div>
+      </motion.div>
     );
   }
 
@@ -126,6 +131,9 @@ export default function Message({
           <motion.div
             layout
             className="w-fit ml-auto my-2 rounded-md max-w-[80%]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 100 }}
+            transition={{ ease: "easeIn", duration: 0.3 }}
           >
             <div
               key={uuidv4()}
