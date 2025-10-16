@@ -1,10 +1,17 @@
+import { cookies } from "next/headers";
 import ThemeToggleButton from "./components/theme-toggle-button";
 
-export default function Home() {
+export default async function Home() {
+  const savedTheme = (await cookies()).get("color-theme");
+
+  const initialTheme = savedTheme?.value || "light";
   return (
     <div>
       <div>
-        <div>This is the navbar</div>
+        <div>
+          This is the navbar
+          <ThemeToggleButton initialTheme={initialTheme} />
+        </div>
       </div>
       <div className="dark:text-3xl dark:text-red-900">
         Stop Chatting Alone. Start Doing More.

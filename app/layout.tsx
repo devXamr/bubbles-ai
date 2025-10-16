@@ -27,10 +27,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" data-theme={theme}>
-      <body>
-        <ThemeToggleButton initialTheme={theme} />
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

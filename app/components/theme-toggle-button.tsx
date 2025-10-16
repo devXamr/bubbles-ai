@@ -20,6 +20,8 @@ export default function ThemeToggleButton({
 
     setTheme(nextTheme);
 
+    localStorage.setItem("app-theme", JSON.stringify(nextTheme));
+
     Cookie.set("color-theme", nextTheme, {
       expires: 1000,
     });

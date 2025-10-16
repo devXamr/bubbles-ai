@@ -19,6 +19,7 @@ import { LoaderCircle, SendHorizontal, WandSparkles } from "lucide-react";
 import { motion } from "motion/react";
 import { UUID } from "crypto";
 import { Behavior } from "@google/genai";
+import ThemeToggleButton from "../components/theme-toggle-button";
 
 async function fetchLocalMessages() {
   const allMessages = localStorage.getItem("localMessages");
@@ -26,6 +27,12 @@ async function fetchLocalMessages() {
   if (!allMessages) {
     return [];
   } else return JSON.parse(allMessages);
+}
+
+async function fetchAppTheme() {
+  const theme = localStorage.getItem("app-theme");
+
+  return theme ? JSON.parse(theme) : "light";
 }
 
 export type MessageType = {
@@ -46,9 +53,11 @@ export default function Chat() {
   const [aiResponseLoading, setAiResponseLoading] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState("");
+  const [appTheme, setAppTheme] = useState("light");
 
   useEffect(() => {
     fetchLocalMessages().then(setMessageList);
+    fetchAppTheme().then(setAppTheme);
   }, []);
 
   function scrollToBottom() {
@@ -173,10 +182,12 @@ export default function Chat() {
     const downloadContent = JSON.stringify(messageList);
     console.log("here's the content that will be downloaded ", downloadContent);
   }
+
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen dark:bg-amber-700">
       <div className="border-b border-gray-200 flex justify-between py-2">
         This will be the top bar
+        <ThemeToggleButton initialTheme={appTheme} />
         <div>
           <input
             type="text"
@@ -236,6 +247,7 @@ export default function Chat() {
           {messageList && messageList.length > 0 && searchTerm === ""
             ? messageList.map((eachMessage) => (
                 <Message
+                  key={uuidv4()}
                   eachMessage={eachMessage}
                   searchWords={searchTerm}
                   messageDeletionFunction={handleMessageDeletion}
