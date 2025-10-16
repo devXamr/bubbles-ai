@@ -1,4 +1,4 @@
-import { MessageType } from "../page";
+import { MessageType } from "../chat/page";
 
 type FileSaveButtonProps = {
   callFunc: (data: MessageType[]) => void;

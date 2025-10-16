@@ -1,7 +1,14 @@
+import ThemeToggleButton from "./components/theme-toggle-button";
+
 export default function Home() {
   return (
     <div>
-      <div>Stop Chatting Alone. Start Doing More.</div>
+      <div>
+        <div>This is the navbar</div>
+      </div>
+      <div className="dark:text-3xl dark:text-red-900">
+        Stop Chatting Alone. Start Doing More.
+      </div>
       <div>
         Bubbles turns your private notes into actionable insights. Chat with
         yourself, or let our AI help you analyze, plan, and create from the data
