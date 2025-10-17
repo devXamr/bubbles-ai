@@ -33,7 +33,7 @@ export default function ThemeToggleButton({
 
   return (
     <button
-      className="border px-2 py-2 rounded-md border-gray-200 cursor-pointer text-gray-500"
+      className="border px-2 py-2 rounded-md border-gray-200  dark:border-[#2E2E2E] cursor-pointer text-gray-500"
       onClick={() => {
         handleThemeChange();
       }}

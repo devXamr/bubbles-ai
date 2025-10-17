@@ -57,8 +57,11 @@ export default function Chat() {
 
   useEffect(() => {
     fetchLocalMessages().then(setMessageList);
-    fetchAppTheme().then(setAppTheme);
   }, []);
+
+  useEffect(() => {
+    fetchAppTheme().then(setAppTheme);
+  });
 
   function scrollToBottom() {
     if (lastMessageRef.current !== null) {
@@ -184,26 +187,28 @@ export default function Chat() {
   }
 
   return (
-    <div className="flex flex-col h-screen dark:bg-amber-700">
-      <div className="border-b border-gray-200 flex justify-between py-2">
+    <div className="flex flex-col h-screen dark:bg-[#0D0D0D]">
+      <div className="border-b border-gray-200 dark:border-[#2E2E2E] flex justify-between py-2">
         This will be the top bar
-        <ThemeToggleButton initialTheme={appTheme} />
-        <div>
-          <input
-            type="text"
-            className="py-2 border outline-0 border-gray-200 rounded-md mx-3 px-3 text-sm"
-            onChange={(e) => {
-              setSearchTerm(e.target.value);
-            }}
-            placeholder="Search here..."
-            value={searchTerm}
-          />
+        <div className="flex gap-1">
+          <ThemeToggleButton initialTheme={appTheme} />
+          <div>
+            <input
+              type="text"
+              className="py-2 border dark:text-gray-200 outline-0 border-gray-200 dark:border-[#2E2E2E] dark:bg-[#1E1E1E]/40 rounded-md mx-3 px-3 text-sm dark:placeholder-[#6F6F6F]"
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+              }}
+              placeholder="Search here..."
+              value={searchTerm}
+            />
+          </div>
         </div>
       </div>
 
       <div className="ml-auto relative">
         <button
-          className="px-3 py-2 rounded-md border border-gray-200 mt-3 mr-3 shadow-md hover:shadow-sm cursor-pointer text-sm"
+          className="px-3 py-2 rounded-md border border-gray-200  dark:border-[#2E2E2E] dark:text-gray-200 mt-3 mr-3 shadow-md hover:shadow-sm cursor-pointer text-sm"
           onClick={() => setShowModal((prev) => !prev)}
         >
           Export
@@ -211,12 +216,12 @@ export default function Chat() {
 
         <div className="relative">
           {showModal && (
-            <div className="flex flex-col w-40 absolute top-4 right-2 border px-1 py-1 border-gray-200 rounded-md">
+            <div className="flex flex-col w-40 absolute top-4 right-2 border px-1 py-1 border-gray-200  dark:border-[#2E2E2E] rounded-md">
               <button
                 onClick={() => {
                   downloadTXT(messageList);
                 }}
-                className="border px-3 py-2 rounded-md border-gray-200 hover:shadow-sm cursor-pointer text-sm text-gray-900 hover:bg-gray-50"
+                className="border px-3 py-2  dark:border-[#2E2E2E] rounded-md border-gray-200 hover:shadow-sm cursor-pointer text-sm text-gray-900 bg-white dark:text-gray-200 hover:bg-gray-50"
               >
                 Download .txt
               </button>
@@ -224,14 +229,14 @@ export default function Chat() {
                 onClick={() => {
                   downloadPDF(messageList);
                 }}
-                className="border px-3 py-2 rounded-md border-gray-200 hover:shadow-sm cursor-pointer text-sm text-gray-900 hover:bg-gray-50 mt-1"
+                className="border px-3 py-2  dark:border-[#2E2E2E] rounded-md border-gray-200 hover:shadow-sm cursor-pointer text-sm text-gray-900 hover:bg-gray-50 mt-1"
               >
                 Download PDF
               </button>
 
               <button
                 onClick={() => downloadDOCX(messageList)}
-                className="border px-3 py-2 rounded-md border-gray-200 hover:shadow-sm cursor-pointer text-sm text-gray-900 hover:bg-gray-50 mt-1"
+                className="border px-3  dark:border-[#2E2E2E] py-2 rounded-md border-gray-200 hover:shadow-sm cursor-pointer text-sm text-gray-900 hover:bg-gray-50 mt-1"
               >
                 Download .docx
               </button>
@@ -241,13 +246,12 @@ export default function Chat() {
       </div>
       <motion.div
         layout
-        className="flex-1 lg:w-[650px] w-full border border-gray-200 my-3 rounded-xl bg-gray-50 px-4 py-4 mx-auto max-h-[640px] -mt-10 overflow-y-scroll scrollbar-hidden"
+        className="flex-1 lg:w-[650px] dark:bg-[#1A1A1A] w-full border dark:border-[#2E2E2E] border-gray-200 my-3 rounded-xl bg-gray-50 px-4 py-4 mx-auto max-h-[640px] -mt-10 overflow-y-scroll scrollbar-hidden"
       >
         <motion.div layout>
           {messageList && messageList.length > 0 && searchTerm === ""
             ? messageList.map((eachMessage) => (
                 <Message
-                  key={uuidv4()}
                   eachMessage={eachMessage}
                   searchWords={searchTerm}
                   messageDeletionFunction={handleMessageDeletion}
@@ -281,10 +285,10 @@ export default function Chat() {
           e.preventDefault();
           handleMessageSubmission();
         }}
-        className=" border lg:w-[650px] w-full border-gray-300 rounded-md text-md mx-auto mb-2"
+        className=" border lg:w-[650px] dark:bg-[#1E1E1E]/40 w-full border-gray-300  dark:border-[#2E2E2E] rounded-md text-md mx-auto mb-2"
       >
         <textarea
-          className="h-28 w-full  py-3 px-2 outline-0 text-gray-600 placeholder-gray-300"
+          className="h-28 w-full dark:bg-[#1E1E1E]/10 rounded-md  py-3 px-2 outline-0 text-gray-600 dark:text-gray-200 dark:placeholder-[#6F6F6F] placeholder-gray-300"
           onChange={(e) => setMessage(e.target.value)}
           value={message}
           placeholder="Add a new message here..."
