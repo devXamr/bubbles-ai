@@ -6,21 +6,33 @@ export default async function Home() {
 
   const initialTheme = savedTheme?.value || "light";
   return (
-    <div>
+    <div className="font-primary">
       <div>
         <div>
           This is the navbar
           <ThemeToggleButton initialTheme={initialTheme} />
         </div>
       </div>
-      <div className="dark:text-3xl dark:text-red-900">
-        Stop Chatting Alone. Start Doing More.
+
+      <div className="bg-green-50 px-10 py-10 mx-3 my-3 rounded-md min-h-[250px] flex justify-center gap-16">
+        {/* This is the hero section. */}
+        <div className="mt-10">
+          <div className="text-3xl dark:text-green-900 text-green-900 font-medium mb-2">
+            Stop Chatting Alone. Start Doing{" "}
+            <span className="py-1 px-2 bg-green-700/20 text-green-700">
+              More.
+            </span>
+          </div>
+          <div className="text-lg text-gray-800 w-[40ch] text-justify">
+            Bubbles turns your private notes into actionable insights. Chat with
+            yourself, or let our AI help you analyze, plan, and create from the
+            data you already store.
+          </div>{" "}
+        </div>
+
+        <div className="aspect-square rounded-md bg-gray-100 h-[300px]"></div>
       </div>
-      <div>
-        Bubbles turns your private notes into actionable insights. Chat with
-        yourself, or let our AI help you analyze, plan, and create from the data
-        you already store.
-      </div>{" "}
+
       <div>
         <div>Features / Sections</div>
         <div>

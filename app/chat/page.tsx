@@ -221,7 +221,7 @@ export default function Chat() {
                 onClick={() => {
                   downloadTXT(messageList);
                 }}
-                className="border px-3 py-2  dark:border-[#2E2E2E] rounded-md border-gray-200 hover:shadow-sm cursor-pointer text-sm text-gray-900 bg-white dark:text-gray-200 hover:bg-gray-50"
+                className="border px-3 py-2  dark:border-[#2E2E2E] rounded-md border-gray-200 hover:shadow-sm cursor-pointer text-sm text-gray-900 bg-white dark:text-gray-200 dark:bg-gray-950 dark:hover:bg-gray-900 hover:bg-gray-50"
               >
                 Download .txt
               </button>
@@ -229,14 +229,14 @@ export default function Chat() {
                 onClick={() => {
                   downloadPDF(messageList);
                 }}
-                className="border px-3 py-2  dark:border-[#2E2E2E] rounded-md border-gray-200 hover:shadow-sm cursor-pointer text-sm text-gray-900 hover:bg-gray-50 mt-1"
+                className="border px-3 py-2  dark:border-[#2E2E2E] rounded-md border-gray-200 hover:shadow-sm cursor-pointer text-sm text-gray-900 hover:bg-gray-50 mt-1 dark:text-gray-200 dark:bg-gray-950 dark:hover:bg-gray-900"
               >
                 Download PDF
               </button>
 
               <button
                 onClick={() => downloadDOCX(messageList)}
-                className="border px-3  dark:border-[#2E2E2E] py-2 rounded-md border-gray-200 hover:shadow-sm cursor-pointer text-sm text-gray-900 hover:bg-gray-50 mt-1"
+                className="border px-3  dark:border-[#2E2E2E] py-2 rounded-md border-gray-200 hover:shadow-sm cursor-pointer text-sm text-gray-900 hover:bg-gray-50 mt-1 dark:text-gray-200 dark:bg-gray-950 dark:hover:bg-gray-900"
               >
                 Download .docx
               </button>
@@ -297,7 +297,7 @@ export default function Chat() {
         <div className="ml-auto w-fit">
           <button
             disabled={aiResponseLoading}
-            className={`text-gray-400  text-sm border rounded-md px-2 py-2 my-1 mx-2 cursor-pointer transition-colors  ${
+            className={`text-gray-400  text-sm border rounded-md px-2 py-2 my-1 mx-2 cursor-pointer dark:border-[#2E2E2E] transition-colors  ${
               searchModeActive &&
               !aiResponseLoading &&
               "bg-green-100 border-green-500 text-green-800 "
@@ -316,7 +316,7 @@ export default function Chat() {
           </button>
           <button
             type="submit"
-            className="text-gray-400 border border-gray-200 rounded-md px-2 py-2 my-1 mr-2 hover:bg-gray-100 cursor-pointer text-sm hover:border-gray-300"
+            className="text-gray-400 border border-gray-200 rounded-md px-2 py-2 my-1 mr-2 hover:bg-gray-100 dark:hover:bg-[#1E1E1E] cursor-pointer text-sm hover:border-gray-300 dark:hover:border-gray-900 dark:border-[#2E2E2E]"
             title="Send"
           >
             <SendHorizontal size="20px" />
