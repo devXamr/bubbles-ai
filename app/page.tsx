@@ -3,11 +3,40 @@ import ThemeToggleButton from "./components/theme-toggle-button";
 import Image from "next/image";
 import { Tilt } from "@/components/motion-primitives/tilt";
 import { Dot } from "lucide-react";
+import { Highlighter } from "@/components/ui/highlighter";
+import { AvatarCircles } from "@/components/ui/avatar-circles";
+import { ProgressiveBlur } from "@/components/ui/progressive-blur";
+import { AnimatedList } from "@/components/ui/animated-list";
+import HeroHumanMessage from "./components/hero-human-message";
+import HeroAIMessage from "./components/hero-ai-message";
 
 export default async function Home() {
   const savedTheme = (await cookies()).get("color-theme");
 
   const initialTheme = savedTheme?.value || "light";
+
+  const avatars = [
+    {
+      imageUrl: "https://avatars.githubusercontent.com/u/16860528",
+      profileUrl: "https://github.com/dillionverma",
+    },
+    {
+      imageUrl: "https://avatars.githubusercontent.com/u/20110627",
+      profileUrl: "https://github.com/tomonarifeehan",
+    },
+    {
+      imageUrl: "https://avatars.githubusercontent.com/u/106103625",
+      profileUrl: "https://github.com/BankkRoll",
+    },
+    {
+      imageUrl: "https://avatars.githubusercontent.com/u/59228569",
+      profileUrl: "https://github.com/safethecode",
+    },
+    {
+      imageUrl: "https://avatars.githubusercontent.com/u/59442788",
+      profileUrl: "https://github.com/sanjay-mali",
+    },
+  ];
 
   {
     /* dark mode later for this page. */
@@ -21,14 +50,19 @@ export default async function Home() {
         </div>
       </div>
 
-      <div className="bg-green-50  overflow-hidden px-10 py-10 rounded-md min-h-[250px] flex justify-center gap-16 relative">
-        <Image
-          src="/pattern-1-redo.png"
-          className="h-full absolute -left-42 top-0 opacity-50"
-          width={250}
-          alt=""
-          height={200}
-        />
+      <div className="bg-green-50  overflow-hidden px-10 py-10 rounded-md min-h-[450px] border flex justify-center gap-16 relative">
+        <div>
+          <Image
+            src="/pattern-1-redo.png"
+            className="h-full absolute -left-42 top-0 opacity-50"
+            width={250}
+            alt=""
+            height={200}
+          />
+
+          <ProgressiveBlur height="13%" position="top" />
+          <ProgressiveBlur height="13%" position="bottom" />
+        </div>
 
         <Image
           src="/pattern-2-redo.png"
@@ -40,26 +74,40 @@ export default async function Home() {
         {/* This is the hero section. */}
         <div className="mt-10">
           <div className="text-3xl dark:text-green-900 text-green-900 font-medium mb-2">
-            Stop Chatting Alone. Start Doing{" "}
-            <span className="py-1 px-2 bg-green-700/20 text-green-700">
+            Stop Chatting{" "}
+            <Highlighter action="underline" color="#0d542b">
+              Alone
+            </Highlighter>
+            . Start Doing{" "}
+            <Highlighter action="highlight" color="#7bf1a8">
               More.
-            </span>
+            </Highlighter>
           </div>
-          <div className="text-lg text-gray-700 w-[40ch] text-justify">
+          <div className="text-lg text-gray-700 w-[40ch] text-justify mb-4">
             Bubbles turns your private notes into actionable insights. Chat with
             yourself, or let our AI help you analyze, plan, and create from the
             data you already store.
           </div>{" "}
+          <AvatarCircles numPeople={99} avatarUrls={avatars} />
           <button className="px-4 py-2 bg-green-800 text-gray-200 mt-5 font-medium rounded-xs outline-1 outline-green-700 outline-offset-1 hover:bg-green-700 transition-colors duration-75 cursor-pointer shadow-lg hover:shadow-sm">
             Try Now
           </button>
           <div className="text-xs mt-2 text-gray-700">No login required.</div>
         </div>
 
-        <div className="aspect-square rounded-md bg-gray-100 h-[300px]"></div>
+        <div className="aspect-square rounded-xl bg-white h-[410px] shadow-md px-2 py-2 overflow-clip">
+          <AnimatedList className="w-full">
+            <HeroHumanMessage message="Pick a book for me" />
+            <HeroAIMessage message="Atomic Habits 📚" />
+            <HeroHumanMessage message="Where should I travel next?" />
+            <HeroAIMessage message="Italy! 🇮🇹🎉" />
+            <HeroHumanMessage message="What's my most recent todo?" />
+            <HeroAIMessage message="Take max for a walk. 🐱" />
+          </AnimatedList>
+        </div>
       </div>
 
-      <div className="max-w-[60%] mx-auto border-l">
+      <div className="max-w-[60%] mx-auto">
         <div className="px-4 py-2 border w-fit bg-green-50 text-gray-600 text-sm mt-10">
           <div className="flex gap-0">
             <Dot size={20} className="text-green-500 animate-pulse" />
@@ -78,7 +126,7 @@ export default async function Home() {
                 apps or losing context.
               </div>
             </div>
-            <div className="aspect-square w-[300px] h-[300px] bg-gray-100"></div>
+            <div className="aspect-video w-[500px] h-[300px] bg-gray-100"></div>
           </div>
 
           <div className="border px-5 py-5 flex gap-10 justify-between my-4 border-green-200 bg-green-50 relative shadow-sm">
