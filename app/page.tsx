@@ -9,6 +9,8 @@ import { ProgressiveBlur } from "@/components/ui/progressive-blur";
 import { AnimatedList } from "@/components/ui/animated-list";
 import HeroHumanMessage from "./components/hero-human-message";
 import HeroAIMessage from "./components/hero-ai-message";
+import { InfiniteSlider } from "@/components/motion-primitives/infinite-slider";
+import SingleClientReview from "./components/single-client-review";
 
 export default async function Home() {
   const savedTheme = (await cookies()).get("color-theme");
@@ -44,9 +46,22 @@ export default async function Home() {
   return (
     <div className="font-primary bg-gray-50">
       <div>
-        <div>
-          This is the navbar
-          <ThemeToggleButton initialTheme={initialTheme} />
+        <div className="mx-10 flex justify-between py-4">
+          <div className="text-2xl font-semibold text-green-900">
+            Bubbles
+            <div className="text-xs font-light ml-7 ">
+              do more with your data.
+            </div>
+          </div>
+          {/*<ThemeToggleButton initialTheme={initialTheme} />*/}
+          <div className="flex gap-4">
+            <button className="px-4 py-2 bg-gray-100 border rounded-md text-sm">
+              Log In
+            </button>
+            <button className="px-4 py-2 bg-green-800 text-white text-sm rounded-md">
+              Sign Up
+            </button>
+          </div>
         </div>
       </div>
 
@@ -108,14 +123,16 @@ export default async function Home() {
       </div>
 
       <div className="max-w-[60%] mx-auto">
-        <div className="px-4 py-2 border w-fit bg-green-50 text-gray-600 text-sm mt-10">
+        <div className="px-2 pr-4 rounded-sm py-2 border border-green-200 w-fit bg-green-50 text-gray-600 text-sm mt-10">
           <div className="flex gap-0">
-            <Dot size={20} className="text-green-500 animate-pulse" />
-            <div>Features</div>
+            <Dot size={30} className="text-green-500 animate-pulse" />
+            <div className="mt-1">Features</div>
           </div>
         </div>
 
-        <div className="mt-10">
+        <div className=" relative">
+          <div className="w-[1px] h-full bg-green-400 absolute"></div>
+
           <div className="border border-green-200 px-5 py-5 flex gap-10 justify-between my-4 bg-green-50 relative shadow-sm">
             <div className="w-[50ch] sticky top-3 h-fit">
               <div className="text-xl font-medium text-green-800">
@@ -158,7 +175,7 @@ export default async function Home() {
               </div>
             </div>
 
-            <div className="aspect-square w-[300px] h-[300px] bg-gray-100"></div>
+            <div className="aspect-video w-[500px] h-[300px] bg-gray-100"></div>
           </div>
           <div className="border px-5 py-5 flex gap-10 justify-between my-4 border-green-200 bg-green-50 relative shadow-sm">
             <div className="w-[50ch] sticky top-3 h-fit">
@@ -172,10 +189,67 @@ export default async function Home() {
               </div>
             </div>
 
-            <div className="aspect-square w-[300px] h-[300px] bg-gray-100"></div>
+            <div className="aspect-video w-[400px] h-[300px]">
+              <Image
+                src="/encrypted.svg"
+                alt="encryption-lock"
+                width={400}
+                height={300}
+                className="w-full h-full select-none"
+              />
+            </div>
           </div>
         </div>
       </div>
+
+      <div className="w-[100%] border mx-auto py-10">
+        <div className="bg-green-800 text-white w-[60%] grid grid-cols-4 mx-auto">
+          <div className="col-span-2 row-span-1 text-4xl border px-4 py-4 bg-green-600 text-green-100 font-medium border-green-800 shadow-md drop-shadow-2xl -ml-2 -mt-2">
+            What do users think about{" "}
+            <Highlighter action="highlight" color="lightgreen">
+              Bubbles?
+            </Highlighter>
+          </div>
+
+          <div className="col-span-1 row-span-1 py-3 border border-green-700">
+            <div className="border-b border-dashed border-green-700 px-3 pb-4">
+              "I wanted something like this personally, so when this app came
+              out, there could not have been anyone happier than me."
+            </div>
+            <div className="ml-auto w-fit px-3 mt-4 text-sm text-right">
+              Sandra Bingir
+              <div className="text-gray-300 text-xs">Software Developer</div>
+            </div>
+          </div>
+
+          <SingleClientReview
+            review="I wanted something like this personally, so when this app came
+              out, there could not have been anyone happier than me."
+            name=" Sandra Bingir"
+          />
+          <SingleClientReview
+            review="I wanted something like this personally, so when this app came
+              out, there could not have been anyone happier than me."
+            name=" Sandra Bingir"
+          />
+          <SingleClientReview
+            review="I wanted something like this personally, so when this app came
+              out, there could not have been anyone happier than me."
+            name=" Sandra Bingir"
+          />
+          <SingleClientReview
+            review="I wanted something like this personally, so when this app came
+              out, there could not have been anyone happier than me."
+            name=" Sandra Bingir"
+          />
+          <SingleClientReview
+            review="I wanted something like this personally, so when this app came
+              out, there could not have been anyone happier than me."
+            name=" Sandra Bingir"
+          />
+        </div>
+      </div>
+
       <div className="w-[60%] mx-auto border px-10 py-10 bg-green-800 text-white">
         <div className="grid grid-cols-2">
           <div className="text-xl">
