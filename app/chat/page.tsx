@@ -20,6 +20,8 @@ import { motion } from "motion/react";
 import { UUID } from "crypto";
 import { Behavior } from "@google/genai";
 import ThemeToggleButton from "../components/theme-toggle-button";
+import { createClient } from "@supabase/supabase-js";
+import { useRouter } from "next/navigation";
 
 async function fetchLocalMessages() {
   const allMessages = localStorage.getItem("localMessages");
@@ -44,6 +46,14 @@ export type MessageType = {
   response?: string;
 };
 
+type sessionType = {
+  access_token: string;
+  expires_at: number;
+  expires_in: number;
+  refresh_token: string;
+  token_type: string;
+};
+
 export default function Chat() {
   const [message, setMessage] = useState<string>("");
   const lastMessageRef = useRef<null | HTMLDivElement>(null);
@@ -52,11 +62,34 @@ export default function Chat() {
   const [searchModeActive, setSearchModeActive] = useState(false);
   const [aiResponseLoading, setAiResponseLoading] = useState(false);
 
+  const [session, setSession] = useState({});
+
   const [searchTerm, setSearchTerm] = useState("");
   const [appTheme, setAppTheme] = useState("light");
 
+  const nav = useRouter();
+
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+
+  async function fetchSession() {
+    const currentSession = await supabase.auth.getSession();
+
+    console.log("Here's the session", session);
+
+    if (currentSession.data.session === null) {
+      nav.push("/");
+    } else {
+      setSession(currentSession.data.session);
+    }
+  }
+
   useEffect(() => {
     fetchLocalMessages().then(setMessageList);
+
+    fetchSession();
   }, []);
 
   useEffect(() => {
