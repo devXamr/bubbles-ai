@@ -11,6 +11,7 @@ import HeroHumanMessage from "./components/hero-human-message";
 import HeroAIMessage from "./components/hero-ai-message";
 import { InfiniteSlider } from "@/components/motion-primitives/infinite-slider";
 import SingleClientReview from "./components/single-client-review";
+import Link from "next/link";
 
 export default async function Home() {
   const savedTheme = (await cookies()).get("color-theme");
@@ -55,12 +56,18 @@ export default async function Home() {
           </div>
           {/*<ThemeToggleButton initialTheme={initialTheme} />*/}
           <div className="flex gap-4">
-            <button className="px-4 py-2 bg-gray-100 border rounded-md text-sm">
+            <Link
+              href="/login"
+              className="px-4 py-2 bg-gray-100 block border rounded-md h-fit text-sm"
+            >
               Log In
-            </button>
-            <button className="px-4 py-2 bg-green-800 text-white text-sm rounded-md">
+            </Link>
+            <Link
+              href="/signup"
+              className="px-4 py-2 block bg-green-800 text-white h-fit text-sm rounded-md"
+            >
               Sign Up
-            </button>
+            </Link>
           </div>
         </div>
       </div>
