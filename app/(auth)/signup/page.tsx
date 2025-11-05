@@ -16,7 +16,10 @@ export default function Signup() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 
-  async function handleUserCreation(id, email) {
+  async function handleUserCreation(
+    id: string | undefined,
+    email: string | undefined
+  ) {
     const creation = await supabase.from("user-data").insert({
       email: email,
       userId: id,

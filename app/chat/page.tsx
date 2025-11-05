@@ -20,7 +20,7 @@ import { motion } from "motion/react";
 import { UUID } from "crypto";
 import { Behavior } from "@google/genai";
 import ThemeToggleButton from "../components/theme-toggle-button";
-import { createClient } from "@supabase/supabase-js";
+import { createClient, Session } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 
 async function fetchLocalMessages() {
@@ -48,7 +48,7 @@ export type MessageType = {
 
 type sessionType = {
   access_token: string;
-  expires_at: number;
+  expires_at?: number | undefined;
   expires_in: number;
   refresh_token: string;
   token_type: string;
@@ -61,12 +61,9 @@ export default function Chat() {
   const [showModal, setShowModal] = useState(false);
   const [searchModeActive, setSearchModeActive] = useState(false);
   const [aiResponseLoading, setAiResponseLoading] = useState(false);
-
-  const [session, setSession] = useState({});
-
+  const [session, setSession] = useState<Session | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [appTheme, setAppTheme] = useState("light");
-
   const nav = useRouter();
 
   const supabase = createClient(
@@ -74,33 +71,42 @@ export default function Chat() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 
+  // function used to scroll to bottom.
+  function scrollToBottom() {
+    if (lastMessageRef.current !== null) {
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+
   async function fetchSession() {
     const currentSession = await supabase.auth.getSession();
-
-    console.log("Here's the session", session);
-
+    console.log("Here's the session", currentSession);
     if (currentSession.data.session === null) {
       nav.push("/");
     } else {
       setSession(currentSession.data.session);
+
+      const { data, error } = await supabase
+        .from("user-data")
+        .select("userMessages");
+
+      console.log(
+        "data returned on first render sync call",
+        data?.[0].userMessages
+      );
+
+      setMessageList(data?.[0].userMessages);
     }
   }
 
   useEffect(() => {
     fetchLocalMessages().then(setMessageList);
-
     fetchSession();
   }, []);
 
   useEffect(() => {
     fetchAppTheme().then(setAppTheme);
   });
-
-  function scrollToBottom() {
-    if (lastMessageRef.current !== null) {
-      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }
 
   useEffect(() => {
     console.log("new message, scroll to bottom!");
@@ -109,7 +115,21 @@ export default function Chat() {
 
   useEffect(() => {
     localStorage.setItem("localMessages", JSON.stringify(messageList));
+    syncMessagesToDb();
   }, [messageList]);
+
+  async function syncMessagesToDb() {
+    const { data, error } = await supabase
+      .from("user-data")
+      .update({ userMessages: messageList })
+      .eq("userId", session?.user.id);
+
+    if (error) {
+      console.error("There was an error while syncing the db.", error);
+    } else {
+      console.log("data returned after db update sync", data);
+    }
+  }
 
   function handleMessageDeletion(deletionMessage: MessageType) {
     console.log("This is the message sent for deletion ", deletionMessage);
@@ -123,6 +143,7 @@ export default function Chat() {
     setMessageList(filteredMessages);
   }
 
+  // called when messages are needed to be edited.
   function handleMessageEdit(
     editedMessage: string,
     previousMessage: MessageType
@@ -151,6 +172,7 @@ export default function Chat() {
     setMessageList(editedMessageList);
   }
 
+  // handles messages if they are sent as prompts (calls api, gets response, forms message - then modifies messageList)
   async function handleAiMessageSubmission() {
     setMessage("");
     setAiResponseLoading(true);
@@ -185,6 +207,7 @@ export default function Chat() {
     setAiResponseLoading(false);
   }
 
+  // handle messages that are submitted.
   function handleMessageSubmission() {
     console.log("Here is the message that was sent", message);
 
@@ -209,6 +232,7 @@ export default function Chat() {
     }
   }
 
+  // used when the export options are clicked.
   function handleMessageListExport() {
     if (messageList.length < 1) {
       console.log("You have no messages to export");
