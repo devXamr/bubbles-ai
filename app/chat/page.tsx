@@ -23,14 +23,6 @@ import ThemeToggleButton from "../components/theme-toggle-button";
 import { createClient, Session } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 
-async function fetchLocalMessages() {
-  const allMessages = localStorage.getItem("localMessages");
-
-  if (!allMessages) {
-    return [];
-  } else return JSON.parse(allMessages);
-}
-
 async function fetchAppTheme() {
   const theme = localStorage.getItem("app-theme");
 
@@ -100,7 +92,6 @@ export default function Chat() {
   }
 
   useEffect(() => {
-    fetchLocalMessages().then(setMessageList);
     fetchSession();
   }, []);
 
@@ -114,7 +105,6 @@ export default function Chat() {
   }, [messageList]);
 
   useEffect(() => {
-    localStorage.setItem("localMessages", JSON.stringify(messageList));
     syncMessagesToDb();
   }, [messageList]);
 
