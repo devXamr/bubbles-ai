@@ -1,7 +1,9 @@
 import { jsPDF } from "jspdf";
 import { Document, Packer, Paragraph } from "docx";
 import { saveAs } from "file-saver";
-import { MessageType } from "./page";
+import { MessageType } from "../app/chat/page";
+
+import Cookie from "js-cookie";
 
 export function downloadPDF(data: MessageType[]) {
   const doc = new jsPDF();
@@ -53,4 +55,18 @@ export function getCurrentTime() {
 export function getCurrentDate() {
   const date = new Date();
   return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+}
+
+export function handleThemeChange(appTheme: string) {
+  const nextTheme = appTheme === "light" ? "dark" : "light";
+
+  localStorage.setItem("app-theme", JSON.stringify(nextTheme));
+
+  Cookie.set("color-theme", nextTheme, {
+    expires: 1000,
+  });
+
+  const root = document.documentElement;
+
+  root.setAttribute("data-theme", nextTheme);
 }

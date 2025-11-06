@@ -2,6 +2,8 @@
 
 import { TextShimmer } from "@/components/motion-primitives/text-shimmer";
 
+import { handleThemeChange } from "../utils";
+
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -15,13 +17,24 @@ import {
   getCurrentTime,
 } from "../utils";
 import FileSaveButton from "../components/file-save-button";
-import { LoaderCircle, SendHorizontal, WandSparkles } from "lucide-react";
+import {
+  EllipsisVertical,
+  LoaderCircle,
+  SendHorizontal,
+  WandSparkles,
+} from "lucide-react";
 import { motion } from "motion/react";
 import { UUID } from "crypto";
 import { Behavior } from "@google/genai";
 import ThemeToggleButton from "../components/theme-toggle-button";
 import { createClient, Session } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@radix-ui/react-dropdown-menu";
 
 async function fetchAppTheme() {
   const theme = localStorage.getItem("app-theme");
@@ -56,6 +69,7 @@ export default function Chat() {
   const [session, setSession] = useState<Session | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [appTheme, setAppTheme] = useState("light");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const nav = useRouter();
 
   const supabase = createClient(
@@ -235,9 +249,9 @@ export default function Chat() {
 
   return (
     <div className="flex flex-col h-screen dark:bg-[#0D0D0D]">
-      <div className="border-b border-gray-200 dark:border-[#2E2E2E] flex justify-between py-2">
+      <div className="border-b border-gray-200 dark:border-[#2E2E2E] md:flex justify-between py-2 hidden">
         This will be the top bar
-        <div className="flex gap-1">
+        <div className="flex gap-1 ">
           <ThemeToggleButton initialTheme={appTheme} />
           <div>
             <input
@@ -253,7 +267,58 @@ export default function Chat() {
         </div>
       </div>
 
-      <div className="ml-auto relative">
+      <div className="md:hidden flex justify-between px-2 py-2">
+        <div className="flex ml-auto">
+          <ThemeToggleButton initialTheme={appTheme} />
+          <div>
+            <input
+              type="text"
+              className="py-2 border dark:text-gray-200 outline-0 border-gray-200 dark:border-[#2E2E2E] dark:bg-[#1E1E1E]/40 rounded-md mx-3 px-3 text-sm dark:placeholder-[#6F6F6F] max-w-[200px]"
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+              }}
+              placeholder="Search here..."
+              value={searchTerm}
+            />
+          </div>
+          {/*<button
+            className="block"
+            onClick={() => {
+              setIsMobileMenuOpen((prev) => !prev);
+            }}
+          >
+            <EllipsisVertical />
+          </button>*/}
+
+          {isMobileMenuOpen && (
+            <div className="absolute right-1 top-10 bg-white border-gray-400 px-1 py-2 rounded-md border shadow-md">
+              <DropdownMenu>
+                <DropdownMenuTrigger>Export Messages</DropdownMenuTrigger>
+
+                <DropdownMenuContent>
+                  <DropdownMenuItem>export .pdf</DropdownMenuItem>
+                  <DropdownMenuItem>export .docx</DropdownMenuItem>
+                  <DropdownMenuItem>export .txt</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              <div>
+                <input
+                  type="text"
+                  className="py-2 border dark:text-gray-200 outline-0 border-gray-200 dark:border-[#2E2E2E] dark:bg-[#1E1E1E]/40 rounded-md mx-3 px-3 text-sm dark:placeholder-[#6F6F6F]"
+                  onChange={(e) => {
+                    setSearchTerm(e.target.value);
+                  }}
+                  placeholder="Search here..."
+                  value={searchTerm}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="ml-auto md:relative">
         <button
           className="px-3 py-2 rounded-md border border-gray-200  dark:border-[#2E2E2E] dark:text-gray-200 mt-3 mr-3 shadow-md hover:shadow-sm cursor-pointer text-sm"
           onClick={() => setShowModal((prev) => !prev)}
@@ -293,7 +358,7 @@ export default function Chat() {
       </div>
       <motion.div
         layout
-        className="flex-1 lg:w-[650px] dark:bg-[#1A1A1A] w-full border dark:border-[#2E2E2E] border-gray-200 my-3 rounded-xl bg-gray-50 px-4 py-4 mx-auto max-h-[640px] -mt-10 overflow-y-scroll scrollbar-hidden"
+        className="flex-1 lg:w-[650px] dark:bg-[#1A1A1A] md:w-full border dark:border-[#2E2E2E] border-gray-200 my-3 rounded-xl bg-gray-50 px-4 py-4 md:mx-auto max-h-[640px] -mt-10 overflow-y-scroll scrollbar-hidden mx-2"
       >
         <motion.div layout>
           {messageList && messageList.length > 0 && searchTerm === ""
@@ -332,7 +397,7 @@ export default function Chat() {
           e.preventDefault();
           handleMessageSubmission();
         }}
-        className=" border lg:w-[650px] dark:bg-[#1E1E1E]/40 w-full border-gray-300  dark:border-[#2E2E2E] rounded-md text-md mx-auto mb-2"
+        className=" border lg:w-[650px] dark:bg-[#1E1E1E]/40 md:w-full border-gray-300  dark:border-[#2E2E2E] rounded-md text-md md:mx-auto mb-2 mx-2"
       >
         <textarea
           className="h-28 w-full dark:bg-[#1E1E1E]/10 rounded-md  py-3 px-2 outline-0 text-gray-600 dark:text-gray-200 dark:placeholder-[#6F6F6F] placeholder-gray-300"
