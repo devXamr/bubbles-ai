@@ -12,6 +12,7 @@ import HeroAIMessage from "./components/hero-ai-message";
 import { InfiniteSlider } from "@/components/motion-primitives/infinite-slider";
 import SingleClientReview from "./components/single-client-review";
 import Link from "next/link";
+import Dither from "@/components/Dither";
 
 export default async function Home() {
   const savedTheme = (await cookies()).get("color-theme");
@@ -45,9 +46,9 @@ export default async function Home() {
     /* dark mode later for this page. */
   }
   return (
-    <div className="font-primary bg-gray-50">
+    <div className="font-primary bg-[#0D0D0D]">
       <div>
-        <div className="md:mx-10 mx-2 flex justify-between py-4">
+        <div className="md:mx-10 mx-2 flex justify-between py-4 bg-[#0D0D0D]">
           <div className="text-2xl font-semibold text-green-900">
             Bubbles
             <div className="text-xs font-light md:ml-7 ml-1 ">
@@ -72,61 +73,45 @@ export default async function Home() {
         </div>
       </div>
 
-      <div className="bg-green-50  overflow-hidden md:px-10 px-3 md:py-10 py-4 rounded-md min-h-[450px] border md:flex justify-center gap-16 relative">
-        <div>
-          <Image
-            src="/pattern-1-redo.png"
-            className="h-full absolute -left-42 top-0 opacity-50 md:block hidden"
-            width={250}
-            alt=""
-            height={200}
-          />
-
-          <ProgressiveBlur
-            height="13%"
-            position="top"
-            className="md:block hidden"
-          />
-          <ProgressiveBlur
-            height="13%"
-            position="bottom"
-            className="md:block hidden"
+      <div className="bg-green-50 justify-between  overflow-hidden flex rounded-md min-h-[450px] md:flex  relative">
+        <div className="w-full h-[450px]">
+          <Dither
+            waveColor={[0.1, 0.4, 0.9]}
+            disableAnimation={false}
+            enableMouseInteraction={true}
+            mouseRadius={0.3}
+            colorNum={4}
+            waveAmplitude={0.3}
+            waveFrequency={3}
+            waveSpeed={0.05}
           />
         </div>
-
-        <Image
-          src="/pattern-2-redo.png"
-          className="h-full absolute -right-42 top-0 opacity-50 md:block hidden"
-          width={250}
-          alt=""
-          height={200}
-        />
-        {/* This is the hero section. */}
-        <div className="mt-10">
-          <div className="text-3xl dark:text-green-900 text-green-900 font-medium mb-2 ">
-            Stop Chatting{" "}
-            <Highlighter action="underline" color="#0d542b">
-              Alone
-            </Highlighter>
-            . Start Doing{" "}
-            <Highlighter action="highlight" color="#7bf1a8">
-              More.
-            </Highlighter>
+        <div className="w-[50%] absolute text-white bg-black">
+          <div className="w-fit mx-auto mt-[10%] font-semibold text-3xl text-left">
+            Personal Knowledge Management <br />
+            For Those That want to do more.
           </div>
-          <div className="text-lg text-gray-700 md:w-[40ch] md:text-justify mb-4">
-            Bubbles turns your private notes into actionable insights. Chat with
-            yourself, or let our AI help you analyze, plan, and create from the
-            data you already store.
-          </div>{" "}
-          <AvatarCircles numPeople={99} avatarUrls={avatars} />
-          <button className="px-4 py-2 bg-green-800 text-gray-200 mt-5 font-medium rounded-xs outline-1 outline-green-700 outline-offset-1 hover:bg-green-700 transition-colors duration-75 cursor-pointer shadow-lg hover:shadow-sm">
-            Try Now
-          </button>
-          <div className="text-xs mt-2 text-gray-700">No login required.</div>
+          <div className="text-gray-200 w-[62%] mx-auto mt-1">
+            Bubbles was built to capture your thoughts and notes in a way that
+            would make them useful for your future self combined with state of
+            the art tools to maximize productivity.
+          </div>
+          <div className="w-[62%] mx-auto pb-40">
+            <AvatarCircles
+              avatarUrls={avatars}
+              className="mt-5"
+              numPeople={99}
+            />
+            <div className="text-xs mt-1 text-gray-200">
+              Many people have already tried Bubbles. Join them today!
+            </div>
+            <button className="text-sm font-medium block mt-4 bg-gray-800 px-5 py-2">
+              Sign Up
+            </button>
+          </div>
         </div>
-
-        <div className="aspect-square rounded-xl bg-white md:h-[410px] shadow-md px-2 py-2 mt-10 md:mt-0 overflow-clip">
-          <AnimatedList className="w-full ">
+        <div className="h-full w-[50%] absolute right-0">
+          <AnimatedList className="w-[50%] mx-auto bg-black shadow-2xl h-[410px] mt-5 rounded-md px-3 py-4 overflow-clip ">
             <HeroHumanMessage message="Pick a book for me" />
             <HeroAIMessage message="Atomic Habits 📚" />
             <HeroHumanMessage message="Where should I travel next?" />
@@ -135,10 +120,8 @@ export default async function Home() {
             <HeroAIMessage message="Take max for a walk. 🐱" />
           </AnimatedList>
         </div>
-      </div>
 
-      <div className="max-w-[60%] mx-auto">
-        <div className="px-2 pr-4 rounded-sm py-2 border border-green-200 w-fit bg-green-50 text-gray-600 text-sm mt-10"></div>
+        {/* This is the hero section. */}
       </div>
     </div>
   );
