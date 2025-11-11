@@ -13,6 +13,8 @@ import { InfiniteSlider } from "@/components/motion-primitives/infinite-slider";
 import SingleClientReview from "./components/single-client-review";
 import Link from "next/link";
 import Dither from "@/components/Dither";
+import ScrollStack, { ScrollStackItem } from "@/components/ScrollStack";
+import MagicBento from "@/components/MagicBento";
 
 export default async function Home() {
   const savedTheme = (await cookies()).get("color-theme");
@@ -76,7 +78,7 @@ export default async function Home() {
       <div className="bg-green-50 justify-between  overflow-hidden flex rounded-md min-h-[450px] md:flex  relative">
         <div className="w-full h-[450px]">
           <Dither
-            waveColor={[0.1, 0.4, 0.9]}
+            waveColor={[0.1, 0.9, 0.5]}
             disableAnimation={false}
             enableMouseInteraction={true}
             mouseRadius={0.3}
@@ -87,7 +89,7 @@ export default async function Home() {
           />
         </div>
         <div className="w-[50%] absolute text-white bg-black">
-          <div className="w-fit mx-auto mt-[10%] font-semibold text-3xl text-left">
+          <div className=" mx-auto mt-[10%] w-[62%] font-semibold text-3xl text-left">
             Personal Knowledge Management <br />
             For Those That want to do more.
           </div>
@@ -122,6 +124,22 @@ export default async function Home() {
         </div>
 
         {/* This is the hero section. */}
+      </div>
+      <div className="mt-20">
+        <div className="mx-auto w-[70%]">
+          <MagicBento
+            textAutoHide={true}
+            enableStars={true}
+            enableSpotlight={true}
+            enableBorderGlow={true}
+            enableTilt={true}
+            enableMagnetism={true}
+            clickEffect={true}
+            spotlightRadius={300}
+            particleCount={12}
+            glowColor="22, 163, 74"
+          />
+        </div>
       </div>
     </div>
   );
