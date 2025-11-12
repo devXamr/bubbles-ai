@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { cookies } from "next/headers";
 import ThemeToggleButton from "./components/theme-toggle-button";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -34,7 +35,11 @@ export default async function RootLayout({
           rel="stylesheet"
         ></link>
       </head>
-      <body>{children}</body>
+      <body>
+        <Toaster richColors />
+
+        {children}
+      </body>
     </html>
   );
 }

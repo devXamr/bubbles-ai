@@ -35,6 +35,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
+import { toast } from "sonner";
 
 async function fetchAppTheme() {
   const theme = localStorage.getItem("app-theme");
@@ -236,6 +237,17 @@ export default function Chat() {
     }
   }
 
+  async function handleLogout() {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      console.error("There was an error while signing the user out: ", error);
+    } else {
+      console.log("logged out successfully.");
+      toast.success("Signed out successfully!");
+    }
+  }
+
   // used when the export options are clicked.
   function handleMessageListExport() {
     if (messageList.length < 1) {
@@ -252,6 +264,12 @@ export default function Chat() {
       <div className="border-b border-gray-200 dark:border-[#2E2E2E] md:flex justify-between py-2 hidden">
         This will be the top bar
         <div className="flex gap-1 ">
+          <button
+            className="dark:bg-[#1E1E1E] text-gray-300 text-sm px-4 py-1 mr-2 rounded-md "
+            onClick={handleLogout}
+          >
+            Sign Out
+          </button>
           <ThemeToggleButton initialTheme={appTheme} />
           <div>
             <input
