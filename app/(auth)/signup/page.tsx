@@ -21,6 +21,7 @@ import {
   FieldError,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -188,7 +189,8 @@ export default function Signup() {
                       Sign up with Google
                     </Button>
                     <FieldDescription className="px-6 text-center">
-                      Already have an account? <a href="#">Sign in</a>
+                      Already have an account?{" "}
+                      <Link href="/login">Sign in</Link>
                     </FieldDescription>
                   </Field>
                 </FieldGroup>
