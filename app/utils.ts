@@ -4,6 +4,16 @@ import { saveAs } from "file-saver";
 import { MessageType } from "../app/chat/page";
 
 import Cookie from "js-cookie";
+import { createClient } from "@supabase/supabase-js";
+
+export function Supabase() {
+  const client = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+
+  return client;
+}
 
 export function downloadPDF(data: MessageType[]) {
   const doc = new jsPDF();
