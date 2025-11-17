@@ -47,8 +47,6 @@ export default function Message({
     eachMessage.message
   );
 
-  console.log("This is the eachMessage that message has received");
-
   if (eachMessage.type === "prompt") {
     return (
       <motion.div

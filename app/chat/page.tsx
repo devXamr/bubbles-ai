@@ -73,6 +73,7 @@ export default function Chat() {
   const [appTheme, setAppTheme] = useState("light");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const nav = useRouter();
+  const [messageAdded, setMessageAdded] = useState(false);
 
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -88,7 +89,6 @@ export default function Chat() {
 
   async function fetchSession() {
     const currentSession = await supabase.auth.getSession();
-    console.log("Here's the session", currentSession);
     if (currentSession.data.session === null) {
       nav.push("/");
     } else {
@@ -97,11 +97,6 @@ export default function Chat() {
       const { data, error } = await supabase
         .from("user-data")
         .select("userMessages");
-
-      console.log(
-        "data returned on first render sync call",
-        data?.[0].userMessages
-      );
 
       setMessageList(data?.[0].userMessages);
     }
@@ -116,9 +111,8 @@ export default function Chat() {
   });
 
   useEffect(() => {
-    console.log("new message, scroll to bottom!");
     scrollToBottom();
-  }, [messageList]);
+  }, [messageAdded]);
 
   useEffect(() => {
     syncMessagesToDb();
@@ -138,8 +132,6 @@ export default function Chat() {
   }
 
   function handleMessageDeletion(deletionMessage: MessageType) {
-    console.log("This is the message sent for deletion ", deletionMessage);
-
     const filteredMessages = messageList.filter(
       (eachMessage) => eachMessage.id != deletionMessage.id
     );
@@ -160,8 +152,6 @@ export default function Chat() {
 
     let editedMessageList = [...messageList];
 
-    console.log("This is the copied messageList", editedMessageList);
-
     editedMessageList[index] = {
       id: messageList[index].id,
       message: editedMessage,
@@ -170,18 +160,12 @@ export default function Chat() {
       type: messageList[index].type,
     };
 
-    console.log(
-      "Here's the array after the edit was made, ",
-      editedMessageList
-    );
-
     setMessageList(editedMessageList);
   }
 
   function importerFunction(messages: MessageType[]) {
     const newMessageList = messageList.concat(messages);
 
-    console.log("This is the new messageList", newMessageList);
     setMessageList(newMessageList);
     toast.success("The messages were imported successfully.");
   }
@@ -190,7 +174,6 @@ export default function Chat() {
   async function handleAiMessageSubmission() {
     setMessage("");
     setAiResponseLoading(true);
-    console.log("The message was passed onto the ai message handler");
 
     const date = getCurrentDate();
     const time = getCurrentTime();
@@ -201,8 +184,6 @@ export default function Chat() {
       // todo: filter the data so that only user messages are send and ai responses are avoided to avoid data bloat.
       { question: message, messageList: JSON.stringify(messageList) }
     );
-
-    console.log("here's the response from the ai", response.data.answer);
 
     if (messageList) {
       setMessageList((prev) => [
@@ -223,8 +204,6 @@ export default function Chat() {
 
   // handle messages that are submitted.
   function handleMessageSubmission() {
-    console.log("Here is the message that was sent", message);
-
     if (searchModeActive) {
       handleAiMessageSubmission();
     } else {
