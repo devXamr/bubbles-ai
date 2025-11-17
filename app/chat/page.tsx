@@ -5,7 +5,7 @@ import { TextShimmer } from "@/components/motion-primitives/text-shimmer";
 import { handleThemeChange } from "../utils";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Message from "../components/message";
 import axios from "axios";
@@ -70,6 +70,8 @@ export default function Chat() {
   const [aiResponseLoading, setAiResponseLoading] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [appTheme, setAppTheme] = useState("light");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const nav = useRouter();
@@ -86,6 +88,14 @@ export default function Chat() {
       lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 300);
+
+    () => clearTimeout(handler);
+  }, [searchTerm]);
 
   async function fetchSession() {
     const currentSession = await supabase.auth.getSession();
@@ -112,7 +122,7 @@ export default function Chat() {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messageAdded]);
+  }, [messageList]);
 
   useEffect(() => {
     syncMessagesToDb();
@@ -170,6 +180,14 @@ export default function Chat() {
     toast.success("The messages were imported successfully.");
   }
 
+  const filteredMessages = useMemo(() => {
+    if (debouncedSearchTerm === "") return messageList;
+
+    const lowerSearchTerm = debouncedSearchTerm.toLowerCase();
+    return messageList.filter((eachMessage) =>
+      eachMessage.message.toLowerCase().includes(lowerSearchTerm)
+    );
+  }, [messageList, debouncedSearchTerm]);
   // handles messages if they are sent as prompts (calls api, gets response, forms message - then modifies messageList)
   async function handleAiMessageSubmission() {
     setMessage("");
@@ -374,7 +392,7 @@ export default function Chat() {
         layout
         className="flex-1 lg:w-[650px] dark:bg-[#1A1A1A] md:w-full border dark:border-[#2E2E2E] border-gray-200 my-3 rounded-xl bg-gray-50 px-4 py-4 md:mx-auto max-h-[640px] -mt-10 overflow-y-scroll scrollbar-hidden mx-2"
       >
-        <motion.div layout>
+        <motion.div>
           {messageList && messageList.length > 0 && searchTerm === ""
             ? messageList.map((eachMessage) => (
                 <Message
@@ -384,18 +402,14 @@ export default function Chat() {
                   messageEditFunction={handleMessageEdit}
                 />
               ))
-            : messageList
-                .filter((eachMessage) =>
-                  eachMessage.message.includes(searchTerm)
-                )
-                .map((eachMessage) => (
-                  <Message
-                    eachMessage={eachMessage}
-                    searchWords={searchTerm}
-                    messageDeletionFunction={handleMessageDeletion}
-                    messageEditFunction={handleMessageEdit}
-                  />
-                ))}
+            : filteredMessages.map((eachMessage) => (
+                <Message
+                  eachMessage={eachMessage}
+                  searchWords={searchTerm}
+                  messageDeletionFunction={handleMessageDeletion}
+                  messageEditFunction={handleMessageEdit}
+                />
+              ))}
 
           {aiResponseLoading && (
             <TextShimmer className="text-sm px-3 py-1">
