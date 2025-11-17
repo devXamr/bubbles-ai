@@ -36,6 +36,7 @@ import {
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import { toast } from "sonner";
+import FileImportHandler from "../components/file-import-handler";
 
 async function fetchAppTheme() {
   const theme = localStorage.getItem("app-theme");
@@ -177,6 +178,14 @@ export default function Chat() {
     setMessageList(editedMessageList);
   }
 
+  function importerFunction(messages: MessageType[]) {
+    const newMessageList = messageList.concat(messages);
+
+    console.log("This is the new messageList", newMessageList);
+    setMessageList(newMessageList);
+    toast.success("The messages were imported successfully.");
+  }
+
   // handles messages if they are sent as prompts (calls api, gets response, forms message - then modifies messageList)
   async function handleAiMessageSubmission() {
     setMessage("");
@@ -245,6 +254,7 @@ export default function Chat() {
     } else {
       console.log("logged out successfully.");
       toast.success("Signed out successfully!");
+      nav.push("/");
     }
   }
 
@@ -336,13 +346,20 @@ export default function Chat() {
         </div>
       </div>
 
-      <div className="ml-auto md:relative">
+      <div className="ml-auto md:relative text-white">
+        <button className="px-3 py-2 rounded-md border border-gray-200  dark:border-[#2E2E2E] dark:text-gray-200 mt-3 mr-3 shadow-md hover:shadow-sm cursor-pointer text-sm">
+          Import
+        </button>
         <button
           className="px-3 py-2 rounded-md border border-gray-200  dark:border-[#2E2E2E] dark:text-gray-200 mt-3 mr-3 shadow-md hover:shadow-sm cursor-pointer text-sm"
           onClick={() => setShowModal((prev) => !prev)}
         >
           Export
         </button>
+
+        <div>
+          <FileImportHandler importerFunc={importerFunction} />
+        </div>
 
         <div className="relative">
           {showModal && (
