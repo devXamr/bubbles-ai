@@ -2,6 +2,8 @@
 
 import { TextShimmer } from "@/components/motion-primitives/text-shimmer";
 
+import { List, useDynamicRowHeight } from "react-window";
+
 import { handleThemeChange } from "../utils";
 
 import Image from "next/image";
@@ -266,6 +268,10 @@ export default function Chat() {
     console.log("here's the content that will be downloaded ", downloadContent);
   }
 
+  const rowHeight = useDynamicRowHeight({
+    defaultRowHeight: 70,
+  });
+
   return (
     <div className="flex flex-col h-screen dark:bg-[#0D0D0D]">
       <div className="border-b border-gray-200 dark:border-[#2E2E2E] md:flex justify-between py-2 hidden">
@@ -388,28 +394,37 @@ export default function Chat() {
           )}
         </div>
       </div>
-      <motion.div
-        layout
-        className="flex-1 lg:w-[650px] dark:bg-[#1A1A1A] md:w-full border dark:border-[#2E2E2E] border-gray-200 my-3 rounded-xl bg-gray-50 px-4 py-4 md:mx-auto max-h-[640px] -mt-10 overflow-y-scroll scrollbar-hidden mx-2"
-      >
-        <motion.div>
-          {messageList && messageList.length > 0 && searchTerm === ""
-            ? messageList.map((eachMessage) => (
-                <Message
-                  eachMessage={eachMessage}
-                  searchWords={searchTerm}
-                  messageDeletionFunction={handleMessageDeletion}
-                  messageEditFunction={handleMessageEdit}
-                />
-              ))
-            : filteredMessages.map((eachMessage) => (
-                <Message
-                  eachMessage={eachMessage}
-                  searchWords={searchTerm}
-                  messageDeletionFunction={handleMessageDeletion}
-                  messageEditFunction={handleMessageEdit}
-                />
-              ))}
+      <motion.div className="flex-1 lg:w-[650px] dark:bg-[#1A1A1A] md:w-full border dark:border-[#2E2E2E] border-gray-200 my-3 rounded-xl bg-gray-50 px-4 py-4 md:mx-auto max-h-[640px] h-[640px] -mt-10 overflow-y-scroll overflow-x-clip  text-ellipsis  scrollbar-hidden mx-2">
+        <div>
+          {messageList && messageList.length > 0 && searchTerm === "" ? (
+            <div className="border border-pink-300 h-[400px]">
+              <List
+                rowComponent={Message}
+                rowCount={messageList.length}
+                rowHeight={rowHeight}
+                rowProps={{
+                  messages: messageList,
+                  searchWords: searchTerm,
+                  messageDeletionFunction: handleMessageDeletion,
+                  messageEditFunction: handleMessageEdit,
+                }}
+              />
+            </div>
+          ) : (
+            <div className="border border-yellow-200 h-[400px]">
+              <List
+                rowComponent={Message}
+                rowCount={filteredMessages.length}
+                rowHeight={rowHeight}
+                rowProps={{
+                  messages: filteredMessages,
+                  searchWords: searchTerm,
+                  messageDeletionFunction: handleMessageDeletion,
+                  messageEditFunction: handleMessageEdit,
+                }}
+              />
+            </div>
+          )}
 
           {aiResponseLoading && (
             <TextShimmer className="text-sm px-3 py-1">
@@ -418,7 +433,7 @@ export default function Chat() {
           )}
 
           <div ref={lastMessageRef}></div>
-        </motion.div>
+        </div>
       </motion.div>
       <form
         onSubmit={(e) => {
