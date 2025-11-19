@@ -2,7 +2,7 @@
 
 import { TextShimmer } from "@/components/motion-primitives/text-shimmer";
 
-import { List, useDynamicRowHeight } from "react-window";
+import { List, useDynamicRowHeight, useListRef } from "react-window";
 
 import { handleThemeChange } from "../utils";
 
@@ -64,6 +64,7 @@ type sessionType = {
 };
 
 export default function Chat() {
+  const listRef = useListRef(null);
   const [message, setMessage] = useState<string>("");
   const lastMessageRef = useRef<null | HTMLDivElement>(null);
   const [messageList, setMessageList] = useState<MessageType[]>([]);
@@ -121,9 +122,17 @@ export default function Chat() {
   useEffect(() => {
     fetchAppTheme().then(setAppTheme);
   });
+  function scrollToBottomList() {
+    const list = listRef.current;
+    list?.scrollToRow({
+      align: "end", // optional
+      behavior: "instant", // optional
+      index: messageList.length - 1,
+    });
+  }
 
   useEffect(() => {
-    scrollToBottom();
+    scrollToBottomList();
   }, [messageList]);
 
   useEffect(() => {
@@ -397,8 +406,9 @@ export default function Chat() {
       <motion.div className="flex-1 lg:w-[650px] dark:bg-[#1A1A1A] md:w-full border dark:border-[#2E2E2E] border-gray-200 my-3 rounded-xl bg-gray-50 md:mx-auto max-h-[640px] h-[640px] -mt-10 overflow-y-scroll overflow-x-hidden  text-ellipsis relative  scrollbar-hidden mx-2 ">
         <div>
           {messageList && messageList.length > 0 && searchTerm === "" ? (
-            <div className="border border-pink-300 h-[100%] w-full absolute rounded-xl">
+            <div className="border  h-[100%] w-full absolute rounded-xl">
               <List
+                listRef={listRef}
                 rowComponent={Message}
                 rowCount={messageList.length}
                 rowHeight={rowHeight}
@@ -412,8 +422,9 @@ export default function Chat() {
               />
             </div>
           ) : (
-            <div className="border border-yellow-200 h-[400px]">
+            <div className="border  h-[100%] w-full absolute rounded-xl">
               <List
+                listRef={listRef}
                 rowComponent={Message}
                 rowCount={filteredMessages.length}
                 rowHeight={rowHeight}

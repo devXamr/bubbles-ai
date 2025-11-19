@@ -60,25 +60,24 @@ export default function Message({
 
   if (messages[index].type === "prompt") {
     return (
-      <div
-        style={style}
-        className="px-3 dark:bg-[#2A2A2A] py-3 rounded-lg border-gray-200 lg:max-w-[70%] max-w-[85%] mx-2 lg:mx-0 mr-auto bg-gray-100 my-3"
-      >
-        <div className="bg-gray-200 text-xs rounded-md py-2 px-3 text-gray-500 dark:bg-[#252525]">
-          <div className="font-medium dark:text-[#9CA3AF]">Query</div>
-          <Highlighter
-            textToHighlight={messages[index].message}
-            searchWords={[searchWords]}
-            highlightStyle={{ backgroundColor: "yellow" }}
-          />
-        </div>
-        <div className="text-sm px-1 py-2 text-gray-800 dark:text-gray-100">
-          <Markdown>{messages[index].response}</Markdown>
-        </div>
+      <div style={style}>
+        <div className="px-3 dark:bg-[#2A2A2A] py-3 rounded-lg border-gray-200 lg:max-w-[70%] max-w-[85%] mx-2 lg:mx-0 mr-auto bg-gray-100 my-3">
+          <div className="bg-gray-200 text-xs rounded-md py-2 px-3 text-gray-500 dark:bg-[#252525]">
+            <div className="font-medium dark:text-[#9CA3AF]">Query</div>
+            <Highlighter
+              textToHighlight={messages[index].message}
+              searchWords={[searchWords]}
+              highlightStyle={{ backgroundColor: "yellow" }}
+            />
+          </div>
+          <div className="text-sm px-1 py-2 text-gray-800 dark:text-gray-100">
+            <Markdown>{messages[index].response}</Markdown>
+          </div>
 
-        <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 py-2 px-1">
-          <div>{messages[index].date}</div>
-          <div>{messages[index].time}</div>
+          <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 py-2 px-1">
+            <div>{messages[index].date}</div>
+            <div>{messages[index].time}</div>
+          </div>
         </div>
       </div>
     );
