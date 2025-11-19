@@ -145,7 +145,7 @@ export default function Message({
           >
             <div
               key={uuidv4()}
-              className="border relative flex ml-auto  py-4 px-3 border-gray-200 dark:border-gray-800 bg-green-100 dark:bg-[#1E3D29] transition-colors duration-100 hover:bg-green-200 dark:hover:bg-green-900 text-gray-800 dark:text-white text-sm rounded-md rounded-b-none"
+              className="border relative flex ml-auto overflow-hidden  py-4 px-3 border-gray-200 dark:border-gray-800 bg-green-100 dark:bg-[#1E3D29] transition-colors duration-100 hover:bg-green-200 dark:hover:bg-green-900 text-gray-800 dark:text-white text-sm rounded-md rounded-b-none"
             >
               <Highlighter
                 textToHighlight={messages[index].message}

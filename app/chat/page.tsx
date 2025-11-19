@@ -394,10 +394,10 @@ export default function Chat() {
           )}
         </div>
       </div>
-      <motion.div className="flex-1 lg:w-[650px] dark:bg-[#1A1A1A] md:w-full border dark:border-[#2E2E2E] border-gray-200 my-3 rounded-xl bg-gray-50 px-4 py-4 md:mx-auto max-h-[640px] h-[640px] -mt-10 overflow-y-scroll overflow-x-clip  text-ellipsis  scrollbar-hidden mx-2">
+      <motion.div className="flex-1 lg:w-[650px] dark:bg-[#1A1A1A] md:w-full border dark:border-[#2E2E2E] border-gray-200 my-3 rounded-xl bg-gray-50 md:mx-auto max-h-[640px] h-[640px] -mt-10 overflow-y-scroll overflow-x-hidden  text-ellipsis relative  scrollbar-hidden mx-2 ">
         <div>
           {messageList && messageList.length > 0 && searchTerm === "" ? (
-            <div className="border border-pink-300 h-[400px]">
+            <div className="border border-pink-300 h-[100%] w-full absolute rounded-xl">
               <List
                 rowComponent={Message}
                 rowCount={messageList.length}
@@ -408,6 +408,7 @@ export default function Chat() {
                   messageDeletionFunction: handleMessageDeletion,
                   messageEditFunction: handleMessageEdit,
                 }}
+                className="scrollbar-hidden"
               />
             </div>
           ) : (
