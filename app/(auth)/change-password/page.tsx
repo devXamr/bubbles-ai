@@ -31,11 +31,6 @@ export default function ChangePassword() {
   }, [passwordChanged]);
   async function fetchSession() {
     const userSession = await supabase.auth.getUser();
-
-    console.log(
-      "This is the user session from the change password page, ",
-      userSession.data.user
-    );
   }
   useEffect(() => {
     fetchSession();

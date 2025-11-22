@@ -34,11 +34,19 @@ import { useRouter } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import { toast } from "sonner";
 import FileImportHandler from "../components/file-import-handler";
+import { DropdownMenuShortcut } from "@/components/ui/dropdown-menu";
 
 async function fetchAppTheme() {
   const theme = localStorage.getItem("app-theme");
@@ -73,6 +81,8 @@ export default function Chat() {
   const [aiResponseLoading, setAiResponseLoading] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+
+  const [isSelectActive, setIsSelectActive] = useState(false);
 
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [appTheme, setAppTheme] = useState("light");
@@ -123,12 +133,14 @@ export default function Chat() {
     fetchAppTheme().then(setAppTheme);
   });
   function scrollToBottomList() {
-    const list = listRef.current;
-    list?.scrollToRow({
-      align: "end", // optional
-      behavior: "instant", // optional
-      index: messageList.length - 1,
-    });
+    if (messageList.length > 0) {
+      const list = listRef.current;
+      list?.scrollToRow({
+        align: "end", // optional
+        behavior: "instant", // optional
+        index: messageList.length - 1,
+      });
+    }
   }
 
   useEffect(() => {
@@ -286,12 +298,48 @@ export default function Chat() {
       <div className="border-b border-gray-200 dark:border-[#2E2E2E] md:flex justify-between py-2 hidden">
         This will be the top bar
         <div className="flex gap-1 ">
+          {isSelectActive && (
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <button className="dark:bg-[#1E1E1E] h-full text-gray-300 text-sm px-4 py-1 mr-2 rounded-md">
+                  Select Options
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className="bg-gray-800 text-gray-200 shadow-md z-10 px-2 py-2 mt-2"
+                align="start"
+              >
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>
+                    Select All
+                    <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    Delete Selected Items
+                    <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
           <button
             className="dark:bg-[#1E1E1E] text-gray-300 text-sm px-4 py-1 mr-2 rounded-md "
             onClick={handleLogout}
           >
             Sign Out
           </button>
+          <button
+            className={`dark:bg-[#1E1E1E] text-gray-300 text-sm px-4 py-1 mr-2 rounded-md ${
+              isSelectActive && "bg-green-300 dark:bg-green-900"
+            }`}
+            onClick={() => {
+              setIsSelectActive((prev) => !prev);
+            }}
+          >
+            {!isSelectActive ? "Select Multiple" : "Cancel Selection"}
+          </button>
+
           <ThemeToggleButton initialTheme={appTheme} />
           <div>
             <input
@@ -417,6 +465,7 @@ export default function Chat() {
                   searchWords: searchTerm,
                   messageDeletionFunction: handleMessageDeletion,
                   messageEditFunction: handleMessageEdit,
+                  isSelectActive: isSelectActive,
                 }}
                 className="scrollbar-hidden"
               />
@@ -433,6 +482,7 @@ export default function Chat() {
                   searchWords: searchTerm,
                   messageDeletionFunction: handleMessageDeletion,
                   messageEditFunction: handleMessageEdit,
+                  isSelectActive,
                 }}
               />
             </div>
