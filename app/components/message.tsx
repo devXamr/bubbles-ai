@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import Highlighter from "react-highlight-words";
 import { text } from "stream/consumers";
-import { useState } from "react";
+import { Dispatch, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { EllipsisVertical } from "lucide-react";
 
@@ -44,6 +44,7 @@ export default function Message({
   messageDeletionFunction,
   messageEditFunction,
   isSelectActive,
+  selectionTogglerFunction,
   index,
   style,
 }: RowComponentProps<{
@@ -55,12 +56,22 @@ export default function Message({
     previousMessage: MessageType
   ) => void;
   isSelectActive: boolean;
+  selectionTogglerFunction: (id: string) => void;
 }>) {
   const [isHovering, setIsHovering] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editedMessage, setEditedMessage] = useState<string>(
     messages[index].message
   );
+
+  const [isBoxChecked, setIsBoxChecked] = useState(false);
+
+  useEffect(() => {
+    console.log(
+      "Log from the message comp, this is the id being sent",
+      messages[index].id
+    );
+  }, [isBoxChecked]);
 
   if (messages[index].type === "prompt") {
     return (
@@ -89,7 +100,7 @@ export default function Message({
 
   return (
     <div style={style} className="flex w-fit ml-auto max-w-[100%] gap-2">
-      <div className="w-fit ml-auto">
+      <div className="w-[100%] ml-auto">
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogContent>
             <DialogHeader>
@@ -142,14 +153,14 @@ export default function Message({
 
           <ContextMenuTrigger>
             <motion.div
-              className="w-fit ml-auto my-2 rounded-md max-w-[80%]"
+              className="min-w-[20%] w-fit ml-auto my-2 rounded-md max-w-[80%]"
               initial={{ opacity: 0 }}
               animate={{ opacity: 100 }}
               transition={{ ease: "easeIn", duration: 0.3 }}
             >
               <div
                 key={uuidv4()}
-                className="border relative flex ml-auto overflow-hidden  py-4 px-3 border-gray-200 dark:border-gray-800 bg-green-100 dark:bg-[#1E3D29] transition-colors duration-100 hover:bg-green-200 dark:hover:bg-green-900 text-gray-800 dark:text-white text-sm rounded-md rounded-b-none"
+                className="border relative flex w-full ml-auto overflow-hidden  py-4 px-3 border-gray-200 dark:border-gray-800 bg-green-100 dark:bg-[#1E3D29] transition-colors duration-100 hover:bg-green-200 dark:hover:bg-green-900 text-gray-800 dark:text-white text-sm rounded-md rounded-b-none"
               >
                 <Highlighter
                   textToHighlight={messages[index].message}
@@ -164,7 +175,7 @@ export default function Message({
                   animate={{ y: 0, opacity: 100 }}
                   exit={{ opacity: 0, y: -2 }}
                   transition={{ duration: 0.4 }}
-                  className="flex gap-2 ml-auto py-0.5 bg-green-50 dark:bg-green-950 text-xs text-gray-400 bg:text-gray-100 w-full justify-between border border-gray-100 dark:border-green-950 border-0.5 px-2 rounded-b-md"
+                  className="flex gap-2 ml-auto py-0.5 w-full bg-green-50 dark:bg-green-950 text-xs text-gray-400 bg:text-gray-100 justify-between border border-gray-100 dark:border-green-950 border-0.5 px-2 rounded-b-md"
                 >
                   <div>{messages[index].date}</div>
                   <div>{messages[index].time}</div>
@@ -174,7 +185,16 @@ export default function Message({
           </ContextMenuTrigger>
         </ContextMenu>
       </div>
-      <Checkbox className="bg-white" />
+      {isSelectActive && (
+        <Checkbox
+          className="bg-white mt-3 size-4 mr-1"
+          checked={isBoxChecked}
+          onCheckedChange={(e) => {
+            setIsBoxChecked((prev) => !prev);
+            selectionTogglerFunction(messages[index].id);
+          }}
+        />
+      )}
     </div>
   );
 }

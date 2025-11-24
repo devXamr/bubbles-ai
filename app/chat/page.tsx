@@ -89,6 +89,36 @@ export default function Chat() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const nav = useRouter();
   const [messageAdded, setMessageAdded] = useState(false);
+  const [selectedMessages, setSelectedMessages] = useState<string[]>([]);
+
+  function selectionTogglerFunction(id: string) {
+    console.log("id received by the toggler, ", id);
+    console.log(
+      "does the selected array already include the id?: ",
+      selectedMessages.includes(id)
+    );
+    if (selectedMessages.includes(id)) {
+      const filteredMessages = selectedMessages.filter(
+        (eachId) => eachId !== id
+      );
+
+      console.log("These are the filtered messages", filteredMessages);
+      setSelectedMessages(filteredMessages);
+    } else {
+      setSelectedMessages((prev) => [...prev, id]);
+      console.log(
+        "just added the following id to the selectedMessages list: ",
+        selectedMessages
+      );
+    }
+  }
+
+  useEffect(() => {
+    console.log(
+      "This is what selected messages looks like now",
+      selectedMessages
+    );
+  }, [selectedMessages]);
 
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -466,6 +496,7 @@ export default function Chat() {
                   messageDeletionFunction: handleMessageDeletion,
                   messageEditFunction: handleMessageEdit,
                   isSelectActive: isSelectActive,
+                  selectionTogglerFunction: selectionTogglerFunction,
                 }}
                 className="scrollbar-hidden"
               />
@@ -483,6 +514,7 @@ export default function Chat() {
                   messageDeletionFunction: handleMessageDeletion,
                   messageEditFunction: handleMessageEdit,
                   isSelectActive,
+                  selectionTogglerFunction,
                 }}
               />
             </div>
