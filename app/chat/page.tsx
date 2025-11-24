@@ -47,6 +47,21 @@ import {
 import { toast } from "sonner";
 import FileImportHandler from "../components/file-import-handler";
 import { DropdownMenuShortcut } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialogHeader,
+  AlertDialogFooter,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogCancel,
+  AlertDialogAction,
+  AlertDialogOverlay,
+} from "@radix-ui/react-alert-dialog";
 
 async function fetchAppTheme() {
   const theme = localStorage.getItem("app-theme");
@@ -81,8 +96,10 @@ export default function Chat() {
   const [aiResponseLoading, setAiResponseLoading] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [allMessagesSelected, setAllMessagesSelected] = useState(false);
 
   const [isSelectActive, setIsSelectActive] = useState(false);
+  const [alertTrigger, setAlertTrigger] = useState(false);
 
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [appTheme, setAppTheme] = useState("light");
@@ -111,6 +128,40 @@ export default function Chat() {
         selectedMessages
       );
     }
+  }
+
+  function handleAllMessageDeletion() {
+    setMessageList([]);
+    toast.success("All messages have been deleted successfully!");
+  }
+
+  function handleMultipleMessageDeletion() {
+    if (allMessagesSelected) {
+      setAlertTrigger(true);
+      return;
+    }
+
+    setAlertTrigger(false);
+
+    let filteredMessages = messageList.filter(
+      (eachMessage) => !selectedMessages.includes(eachMessage.id)
+    );
+
+    console.log(
+      "This is a preview of messageList after the changes: ",
+      filteredMessages
+    );
+
+    const numOfDeletedMessages = messageList.length - filteredMessages.length;
+    console.log("num of messages deleted: ", numOfDeletedMessages);
+
+    setMessageList(filteredMessages);
+    setSelectedMessages([]);
+    toast.success(`Successfully deleted ${numOfDeletedMessages} messages!`);
+  }
+
+  function handleAllMessageSelection() {
+    setAllMessagesSelected((prev) => !prev);
   }
 
   useEffect(() => {
@@ -325,6 +376,38 @@ export default function Chat() {
 
   return (
     <div className="flex flex-col h-screen dark:bg-[#0D0D0D]">
+      <AlertDialog open={alertTrigger} onOpenChange={setAlertTrigger}>
+        <AlertDialogOverlay className="fixed inset-0 bg-black/50 z-50" />
+        <AlertDialogContent className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-white dark:bg-gray-900 px-6 py-4 rounded-lg shadow-lg max-w-md w-full mx-4">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+              Are you absolutely sure?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-sm text-gray-600 dark:text-gray-300">
+              This action cannot be undone. This will permanently delete all
+              selected messages.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex gap-2 mt-4 justify-end">
+            <AlertDialogCancel
+              onClick={() => setAlertTrigger(false)}
+              className="px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+            >
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                handleAllMessageDeletion();
+                setAlertTrigger(false);
+                setAllMessagesSelected(false);
+              }}
+              className="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700"
+            >
+              Delete All
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       <div className="border-b border-gray-200 dark:border-[#2E2E2E] md:flex justify-between py-2 hidden">
         This will be the top bar
         <div className="flex gap-1 ">
@@ -340,11 +423,13 @@ export default function Chat() {
                 align="start"
               >
                 <DropdownMenuGroup>
-                  <DropdownMenuItem>
-                    Select All
+                  <DropdownMenuItem onClick={handleAllMessageSelection}>
+                    {allMessagesSelected
+                      ? "Unselect All Messages"
+                      : "Select All"}
                     <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleMultipleMessageDeletion}>
                     Delete Selected Items
                     <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
                   </DropdownMenuItem>
@@ -497,6 +582,7 @@ export default function Chat() {
                   messageEditFunction: handleMessageEdit,
                   isSelectActive: isSelectActive,
                   selectionTogglerFunction: selectionTogglerFunction,
+                  allMessagesSelected,
                 }}
                 className="scrollbar-hidden"
               />
@@ -515,6 +601,7 @@ export default function Chat() {
                   messageEditFunction: handleMessageEdit,
                   isSelectActive,
                   selectionTogglerFunction,
+                  allMessagesSelected,
                 }}
               />
             </div>

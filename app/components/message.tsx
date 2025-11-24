@@ -45,6 +45,7 @@ export default function Message({
   messageEditFunction,
   isSelectActive,
   selectionTogglerFunction,
+  allMessagesSelected,
   index,
   style,
 }: RowComponentProps<{
@@ -57,6 +58,7 @@ export default function Message({
   ) => void;
   isSelectActive: boolean;
   selectionTogglerFunction: (id: string) => void;
+  allMessagesSelected: boolean;
 }>) {
   const [isHovering, setIsHovering] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -67,11 +69,12 @@ export default function Message({
   const [isBoxChecked, setIsBoxChecked] = useState(false);
 
   useEffect(() => {
-    console.log(
-      "Log from the message comp, this is the id being sent",
-      messages[index].id
-    );
-  }, [isBoxChecked]);
+    if (allMessagesSelected === true) {
+      setIsBoxChecked(true);
+    } else {
+      setIsBoxChecked(false);
+    }
+  }, [allMessagesSelected]);
 
   if (messages[index].type === "prompt") {
     return (
