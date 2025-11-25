@@ -566,10 +566,10 @@ export default function Chat() {
           )}
         </div>
       </div>
-      <motion.div className="flex-1 lg:w-[650px] dark:bg-[#1A1A1A] md:w-full border dark:border-[#2E2E2E] border-gray-200 my-3 rounded-xl bg-gray-50 md:mx-auto max-h-[640px] h-[640px] -mt-10 overflow-y-scroll overflow-x-hidden  text-ellipsis relative  scrollbar-hidden mx-2 ">
+      <motion.div className="flex-1 lg:w-[650px]  dark:bg-[#1A1A1A] md:w-full border dark:border-[#2E2E2E] border-gray-200 my-3 lg:rounded-xl bg-gray-50 md:mx-auto  -mt-10 overflow-y-scroll overflow-x-hidden  text-ellipsis relative  scrollbar-hidden mx-2 ">
         <div>
           {messageList && messageList.length > 0 && searchTerm === "" ? (
-            <div className="border  h-[100%] w-full absolute rounded-xl">
+            <div className="h-[100%] w-full absolute rounded-xl">
               <List
                 listRef={listRef}
                 rowComponent={Message}
@@ -588,7 +588,7 @@ export default function Chat() {
               />
             </div>
           ) : (
-            <div className="border  h-[100%] w-full absolute rounded-xl">
+            <div className=" h-[100%] w-full absolute rounded-xl">
               <List
                 listRef={listRef}
                 rowComponent={Message}
@@ -624,7 +624,7 @@ export default function Chat() {
         className=" border lg:w-[650px] dark:bg-[#1E1E1E]/40 md:w-full border-gray-300  dark:border-[#2E2E2E] rounded-md text-md md:mx-auto mb-2 mx-2"
       >
         <textarea
-          className="h-28 w-full dark:bg-[#1E1E1E]/10 rounded-md  py-3 px-2 outline-0 text-gray-600 dark:text-gray-200 dark:placeholder-[#6F6F6F] placeholder-gray-300"
+          className="lg:h-28 h-10 w-full dark:bg-[#1E1E1E]/10 rounded-md  py-3 px-2 outline-0 text-gray-600 dark:text-gray-200 dark:placeholder-[#6F6F6F] placeholder-gray-300"
           onChange={(e) => setMessage(e.target.value)}
           value={message}
           placeholder="Add a new message here..."
