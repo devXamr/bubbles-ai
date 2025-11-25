@@ -48,99 +48,150 @@ export default async function Home() {
     /* dark mode later for this page. */
   }
   return (
-    <div className="font-primary bg-[#0D0D0D]">
-      <div>
-        <div className="md:mx-10 mx-2 flex justify-between py-4 bg-[#0D0D0D]">
-          <div className="text-2xl font-semibold text-green-900">
-            Bubbles
-            <div className="text-xs font-light md:ml-7 ml-1 ">
-              do more with your data.
-            </div>
-          </div>
-          {/*<ThemeToggleButton initialTheme={initialTheme} />*/}
-          <div className="flex gap-4">
-            <Link
-              href="/login"
-              className="px-4 py-2 bg-gray-100 block border rounded-md h-fit text-sm"
-            >
-              Log In
-            </Link>
-            <Link
-              href="/signup"
-              className="px-4 py-2 block bg-green-800 text-white h-fit text-sm rounded-md"
-            >
-              Sign Up
-            </Link>
-          </div>
+    <div className="font-primary">
+      <section className="px-3 py-3 font-primary mx-3 my-3">
+        <div className="text-xs border w-fit px-1 bg-green-50 border-green-100  py-0.5">
+          Your second brain, powered by AI
         </div>
-      </div>
-
-      <div className="bg-green-50 justify-between  overflow-hidden flex rounded-md min-h-[450px] md:flex  relative">
-        <div className="w-full h-[450px]">
-          <Dither
-            waveColor={[0.1, 0.9, 0.5]}
-            disableAnimation={false}
-            enableMouseInteraction={true}
-            mouseRadius={0.3}
-            colorNum={4}
-            waveAmplitude={0.3}
-            waveFrequency={3}
-            waveSpeed={0.05}
-          />
+        <div className="text-5xl mt-2">
+          Capture Ideas.
+          <br />
+          <span className="text-green-600">Ask AI Anything.</span>
+          <br /> Take Action.
         </div>
-        <div className="w-[50%] absolute text-white bg-black">
-          <div className=" mx-auto mt-[10%] w-[62%] font-semibold text-3xl text-left">
-            Personal Knowledge Management <br />
-            For Those That want to do more.
-          </div>
-          <div className="text-gray-200 w-[62%] mx-auto mt-1">
-            Bubbles was built to capture your thoughts and notes in a way that
-            would make them useful for your future self combined with state of
-            the art tools to maximize productivity.
-          </div>
-          <div className="w-[62%] mx-auto pb-40">
-            <AvatarCircles
-              avatarUrls={avatars}
-              className="mt-5"
-              numPeople={99}
-            />
-            <div className="text-xs mt-1 text-gray-200">
-              Many people have already tried Bubbles. Join them today!
-            </div>
-            <button className="text-sm font-medium block mt-4 bg-gray-800 px-5 py-2">
-              Sign Up
-            </button>
-          </div>
-        </div>
-        <div className="h-full w-[50%] absolute right-0">
-          <AnimatedList className="w-[50%] mx-auto bg-black shadow-2xl h-[410px] mt-5 rounded-md px-3 py-4 overflow-clip ">
-            <HeroHumanMessage message="Pick a book for me" />
-            <HeroAIMessage message="Atomic Habits 📚" />
-            <HeroHumanMessage message="Where should I travel next?" />
-            <HeroAIMessage message="Italy! 🇮🇹🎉" />
-            <HeroHumanMessage message="What's my most recent todo?" />
-            <HeroAIMessage message="Take max for a walk. 🐱" />
-          </AnimatedList>
+        <div className="text-lg mt-4 text-gray-600 ">
+          The only knowledge management tool that feels as natural as texting a
+          friend. Capture your thoughts instantly, and let AI transform them
+          into actionable insights.
         </div>
 
-        {/* This is the hero section. */}
-      </div>
-      <div className="mt-20">
-        <div className="mx-auto w-[70%]">
-          <MagicBento
-            textAutoHide={true}
-            enableStars={true}
-            enableSpotlight={true}
-            enableBorderGlow={true}
-            enableTilt={true}
-            enableMagnetism={true}
-            clickEffect={true}
-            spotlightRadius={300}
-            particleCount={12}
-            glowColor="22, 163, 74"
-          />
+        <button className="bg-gradient-to-br text-white font-semibold from-green-300 via-green-500 to-green-600 block w-full py-2 mt-5 rounded-sm ">
+          Start Free Trial
+        </button>
+
+        <button className="block w-full py-2 rounded-sm border border-green-300 text-green-900 bg-green-100 mt-2">
+          Watch Demo
+        </button>
+
+        <div>
+          <div className="bg-gray-50 rounded-md border mt-5 px-3 py-2 shadow-md">
+            <div className="max-w-[80%] ml-auto mt-3 bg-green-500 rounded-md px-3 text-white font-medium py-2">
+              This is an human message here
+            </div>
+            <div className="max-w-[80%] text-gray-800 mr-auto px-4 py-2 bg-gray-200 mt-3 rounded-md ">
+              This is an AI response for the message sent by the human.
+            </div>
+            <div className="max-w-[80%] ml-auto mt-3 bg-green-500 rounded-md px-3 text-white font-medium py-2">
+              This is an human message here
+            </div>
+            <div className="max-w-[80%] text-gray-800 mr-auto px-4 py-2 bg-gray-200 mt-3 rounded-md ">
+              This is an AI response for the message sent by the human.
+            </div>
+
+            <div className="w-full bg-white py-2 mt-4 px-1 rounded-md border flex justify-between">
+              <div>This will be a dummy input</div>
+              <div>send</div>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
+
+      <section className="px-4 py-4">
+        <div className="text-3xl text-gray-900 text-left mt-10">
+          Everything you need in{" "}
+          <span className="text-green-600">one place.</span>
+        </div>
+        <div className="text-lg mt-2 text-gray-700  text-left mb-10">
+          A complete knowledge management system designed for the way you
+          actually think and work.
+        </div>
+
+        <div>
+          <div className="border rounded-sm shadow-sm">
+            <video width={1000} height={1000} muted autoPlay loop>
+              <source src={"/send-animation.mp4"} type="video/mp4"></source>
+            </video>
+
+            <div className="px-3 pb-10">
+              <div className="text-lg mt-4 font-medium ">
+                WhatsApp-Style Interface
+              </div>
+              <div className="text-gray-600 mt-2">
+                Capture ideas as naturally as chatting with a friend. No
+                learning curve, just start typing and let your thoughts flow.
+              </div>
+            </div>
+          </div>
+          <div className="border rounded-sm shadow-sm mt-5">
+            <video width={1000} height={1000} muted autoPlay loop>
+              <source src={"/send-animation.mp4"} type="video/mp4"></source>
+            </video>
+
+            <div className="px-3 pb-10">
+              <div className="text-lg mt-4 font-medium ">
+                AI-Powered Insights{" "}
+              </div>
+              <div className="text-gray-600 mt-2">
+                Ask questions, find patterns, and get actionable insights from
+                your knowledge base. Your personal AI analyst, always ready.
+              </div>
+            </div>
+          </div>
+          <div className="border rounded-sm shadow-sm mt-5">
+            <video width={1000} height={1000} muted autoPlay loop>
+              <source src={"/send-animation.mp4"} type="video/mp4"></source>
+            </video>
+
+            <div className="px-3 pb-10">
+              <div className="text-lg mt-4 font-medium ">
+                One-Click Import/Export{" "}
+              </div>
+              <div className="text-gray-600 mt-2">
+                Instantly import WhatsApp chats or export to PDF, DOCX, or TXT.
+                Your data, your control, always portable.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div>Simple. Powerful, Intelligent.</div>
+        <div>Three steps to transform how you manage knowledge</div>
+
+        <div>
+          <div>
+            <div className="text-2xl px-6 py-3 rounded-full bg-green-200 w-fit">
+              1
+            </div>
+            <div className="text-lg">Capture</div>
+            <div>
+              Type, paste, or import. Capture thoughts as naturally as sending a
+              message. No formatting, no fuss.
+            </div>
+          </div>
+          <div>
+            <div className="text-2xl px-5 py-3 rounded-full bg-green-200 w-fit">
+              2
+            </div>
+            <div>Capture</div>
+            <div>
+              Type, paste, or import. Capture thoughts as naturally as sending a
+              message. No formatting, no fuss.
+            </div>
+          </div>
+          <div>
+            <div className="text-2xl px-5 py-3 rounded-full bg-green-200 w-fit">
+              3
+            </div>
+            <div>Capture</div>
+            <div>
+              Type, paste, or import. Capture thoughts as naturally as sending a
+              message. No formatting, no fuss.
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
